@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFRI DIGITAL HUB</title>
+<style>
+body { background: #0a0a0a; color: white; font-family: Arial; margin: 0; padding: 20px; text-align: center; }
+.header { color: #00FF88; font-size: 32px; font-weight: bold; margin-top: 30px; }
+.sub { color: #aaa; margin: 10px 0 30px 0; }
+.card { background: #1a1a1a; border-radius: 15px; padding: 20px; margin: 15px auto; max-width: 400px; border: 1px solid #222; }
+.price { font-size: 28px; font-weight: bold; }
+.taux { background: #00FF88; color: black; display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; margin: 15px 0; }
+.pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.pay-btn { background: #222; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; font-weight: bold; }
+.pay-btn.active { background: #00FF88; color: black; border-color: #00FF88; }
+.note { color: #666; font-size: 12px; margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<div class="header">AFRI DIGITAL HUB</div>
+<div class="sub">La marketplace 100% digitale d'Afrique</div>
+
+<div class="card">
+  <div>Produit Test : E-book Business</div>
+  <div class="price" id="prixPrincipal">1 SDA</div>
+  <div class="taux" id="tauxADH">1 SDA = 5 ADH</div>
+  <div style="color:#aaa; font-size:14px;">Choisis ton paiement</div>
+  <div class="pay-grid" id="payGrid"></div>
+</div>
+
+<div class="note">Pour changer le taux : modifie CONFIG plus bas dans le code<br>582 Contributeurs | 34 Membres</div>
+
+<script>
+// ================= CONFIG - TOI TU MODIFIES ICI =================
+const CONFIG = {
+  prixBaseSDA: 1,
+  tauxADH: 5, // <--- CHANGE ICI QUAND ADH EST LISTE. Ex: 5, 11, 20
+  paiements: [
+    { code: 'SDA', nom: 'SDA', actif: true },
+    { code: 'ADH', nom: 'ADH', actif: true },
+    { code: 'USDT', nom: 'USDT', actif: true },
+    { code: 'USDC', nom: 'USDC', actif: true },
+    { code: 'CDF', nom: 'CDF', actif: true },
+    { code: 'XOF', nom: 'FCFA', actif: true },
+    { code: 'UGX', nom: 'UGX', actif: true },
+    { code: 'USD', nom: 'USD', actif: true }
+  ]
+};
+// ===============================================================
+
+function afficher() {
+  document.getElementById('tauxADH').innerText = `1 SDA = ${CONFIG.tauxADH} ADH`;
+  document.getElementById('prixPrincipal').innerText = `${CONFIG.prixBaseSDA} SDA`;
+  const grid = document.getElementById('payGrid');
+  grid.innerHTML = '';
+  CONFIG.paiements.forEach(p => {
+    if(p.actif){
+      let prix = p.code === 'ADH' ? CONFIG.prixBaseSDA * CONFIG.tauxADH : CONFIG.prixBaseSDA;
+      if(p.code !== 'SDA' && p.code !== 'ADH') prix = prix + ' ~'; // pour monnaies fiat on calculera plus tard
+      const btn = document.createElement('div');
+      btn.className = 'pay-btn active';
+      btn.innerHTML = `${p.nom}<br><small>${p.code === 'ADH' ? prix+' '+p.code : 'Payer en '+p.code}</small>`;
+      grid.appendChild(btn);
+    }
+  });
+}
+afficher();
+</script>
+
+</body>
+</html>
