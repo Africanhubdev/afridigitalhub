@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ouvre ta boutique - AFRI DIGITAL HUB</title>
+<style>
+body{background:#000;color:#fff;font-family:sans-serif;padding:20px}
+input,textarea{width:100%;padding:15px;margin:10px 0;background:#18181b;border:1px solid #27272a;border-radius:12px;color:#fff}
+button{width:100%;padding:15px;background:#22c55e;color:#000;font-weight:bold;border-radius:12px;border:none}
+</style>
+</head>
+<body>
+<h1 style="color:#22c55e">Ouvre ta boutique</h1>
+<p>Deviens vendeur en 30 secondes</p>
+<input id="name" placeholder="Nom de ta boutique">
+<input id="user" placeholder="@username ex: afristore">
+<textarea id="bio" placeholder="Description de ta boutique"></textarea>
+<button onclick="createShop()">CRÉER MA BOUTIQUE →</button>
+<script>
+function createShop(){
+let u=document.getElementById('user').value;
+if(!u){alert('Mets un @username');return;}
+alert('Boutique créée ! Lien: /shop.html?u='+u);
+location.href='shop.html?u='+u;
+}
+</script>
+</body>
+</html>
