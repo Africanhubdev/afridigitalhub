@@ -1,0 +1,25 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Boutique - AFRI DIGITAL HUB</title><style>
+body{background:#000;color:#fff;font-family:sans-serif;text-align:center;padding:20px}
+.card{background:#18181b;padding:20px;border-radius:12px;margin:10px;border:1px solid #27272a}
+.top{max-width:500px;margin:auto}
+</style></head>
+<body>
+<div class="top">
+<h1 id="title" style="font-size:36px"></h1>
+<p style="color:#22c55e">Boutique officielle vérifiée ✅ sur AFRI DIGITAL HUB</p>
+<p id="bio" style="color:#aaa;margin-top:10px"></p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0">
+<div class="card">📘 E-book Business<br><b>1 SDA</b><br><button style="margin-top:10px;background:#22c55e;color:#000;padding:8px 12px;border-radius:8px;border:none">Acheter</button></div>
+<div class="card">🎨 Pack Canva Afro<br><b>2 SDA</b><br><button style="margin-top:10px;background:#22c55e;color:#000;padding:8px 12px;border-radius:8px;border:none">Acheter</button></div>
+</div>
+<a href="become-seller.html" style="color:#22c55e">+ Ouvre ta boutique toi aussi</a>
+</div>
+<script>
+let params=new URLSearchParams(location.search);
+let u=params.get('u')||'demo';
+let b=params.get('bio')||'Vendeur digital africain';
+document.getElementById('title').innerText='@'+u;
+document.getElementById('bio').innerText=b;
+</script>
+</body></html>
