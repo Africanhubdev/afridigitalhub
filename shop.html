@@ -1,25 +1,117 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Boutique - AFRI DIGITAL HUB</title><style>
-body{background:#000;color:#fff;font-family:sans-serif;text-align:center;padding:20px}
-.card{background:#18181b;padding:20px;border-radius:12px;margin:10px;border:1px solid #27272a}
-.top{max-width:500px;margin:auto}
-</style></head>
-<body>
-<div class="top">
-<h1 id="title" style="font-size:36px"></h1>
-<p style="color:#22c55e">Boutique officielle vérifiée ✅ sur AFRI DIGITAL HUB</p>
-<p id="bio" style="color:#aaa;margin-top:10px"></p>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0">
-<div class="card">📘 E-book Business<br><b>1 SDA</b><br><button style="margin-top:10px;background:#22c55e;color:#000;padding:8px 12px;border-radius:8px;border:none">Acheter</button></div>
-<div class="card">🎨 Pack Canva Afro<br><b>2 SDA</b><br><button style="margin-top:10px;background:#22c55e;color:#000;padding:8px 12px;border-radius:8px;border:none">Acheter</button></div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop - AFRI DIGITAL HUB</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+
+<!-- HEADER VENDEUR -->
+<div class="bg-white shadow-sm sticky top-0 z-10">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <a href="/" class="font-black text-xl">AFRI DIGITAL HUB</a>
+    <a href="/become-seller.html" class="bg-black text-white px-4 py-2 rounded-full text-sm">+ Boutique</a>
+  </div>
 </div>
-<a href="become-seller.html" style="color:#22c55e">+ Ouvre ta boutique toi aussi</a>
+
+<div class="max-w-6xl mx-auto px-4 py-6">
+  <!-- PROFIL VENDEUR -->
+  <div id="sellerProfile" class="bg-white rounded-2xl p-6 mb-6 text-center shadow-sm">
+    <!-- Rempli par JS -->
+  </div>
+
+  <!-- CATEGORIES FILTRES -->
+  <div class="flex gap-2 overflow-x-auto pb-4 mb-2 no-scrollbar">
+    <button onclick="filterCat('all')" class="cat-btn active bg-black text-white px-4 py-2 rounded-full text-sm whitespace-nowrap">Tout</button>
+    <button onclick="filterCat('ebook')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">📚 E-books</button>
+    <button onclick="filterCat('formation')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">🎓 Formations</button>
+    <button onclick="filterCat('template')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">🎨 Templates</button>
+    <button onclick="filterCat('app')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">💻 Apps/Logiciels</button>
+    <button onclick="filterCat('beat')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">🎵 Beats/Musiques</button>
+    <button onclick="filterCat('ia')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">🤖 Outils IA</button>
+    <button onclick="filterCat('business')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">📄 Business/CV</button>
+  </div>
+
+  <!-- GRILLE PRODUITS -->
+  <div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Rempli par JS -->
+  </div>
+
+  <!-- BOUTON AJOUT PRODUIT (PROPRIO) -->
+  <div id="ownerAction" class="hidden mt-10 text-center">
+    <button onclick="addProductPrompt()" class="bg-green-600 text-white px-6 py-3 rounded-full font-bold"><i class="fas fa-plus"></i> Ajouter un produit</button>
+    <p class="text-xs text-gray-400 mt-2">Visible uniquement par toi</p>
+  </div>
 </div>
+
 <script>
-let params=new URLSearchParams(location.search);
-let u=params.get('u')||'demo';
-let b=params.get('bio')||'Vendeur digital africain';
-document.getElementById('title').innerText='@'+u;
-document.getElementById('bio').innerText=b;
+// 1. RECUPERE USERNAME
+const params = new URLSearchParams(window.location.search);
+const username = params.get('u') || 'BEATMAN';
+const sellers = JSON.parse(localStorage.getItem('afri_sellers') || '{}');
+const seller = sellers[username] || { name: username, bio: 'Créateur digital halal sur AFRI DIGITAL HUB', whatsapp: '243', verified: true };
+
+// 2. PROFIL
+document.getElementById('sellerProfile').innerHTML = `
+  <div class="w-20 h-20 bg-black text-white rounded-full flex items-center justify-center text-2xl font-black mx-auto mb-3">${seller.name[0].toUpperCase()}</div>
+  <h1 class="text-2xl font-black flex items-center justify-center gap-2">@${username} ${seller.verified? '<span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">✓ Vérifié</span>' : ''} <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">HALAL</span></h1>
+  <p class="text-gray-500 mt-2">${seller.bio}</p>
+  <a href="https://wa.me/${seller.whatsapp}" class="inline-block mt-4 bg-green-500 text-white px-6 py-2 rounded-full"><i class="fab fa-whatsapp"></i> Contacter sur WhatsApp</a>
+`;
+
+// 3. PRODUITS - Par défaut ta vision
+let defaultProducts = [
+  { id:1, cat:'ebook', title:'E-book Business Halal en Afrique', price:'15', type:'📚 E-book' },
+  { id:2, cat:'template', title:'Pack 100 Templates Canva Afro', price:'25', type:'🎨 Template' },
+  { id:3, cat:'formation', title:'Formation Dropshipping Halal 2026', price:'49', type:'🎓 Formation' },
+  { id:4, cat:'beat', title:'Pack 10 Beats Afro Trap + Licence', price:'30', type:'🎵 Beat' },
+  { id:5, cat:'app', title:'Logo Maker Afro - App', price:'19', type:'💻 App' },
+  { id:6, cat:'ia', title:'Outil IA Générateur Business Plan Halal', price:'35', type:'🤖 Outil IA' },
+  { id:7, cat:'business', title:'Business Plan Boutique Halal + CV Pro', price:'20', type:'📄 Business' },
+  { id:8, cat:'formation', title:'Cours Montage Vidéo CapCut Pro', price:'29', type:'🎓 Cours' },
+];
+
+let key = 'afri_products_' + username;
+let products = JSON.parse(localStorage.getItem(key) || 'null') || defaultProducts;
+
+function render(list){
+  document.getElementById('productGrid').innerHTML = list.map(p => `
+    <div class="bg-white rounded-2xl p-4 shadow-sm border hover:shadow-md transition">
+      <div class="flex justify-between items-start mb-3">
+        <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">${p.type}</span>
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">HALAL ✓</span>
+      </div>
+      <h3 class="font-bold leading-tight mb-2">${p.title}</h3>
+      <p class="text-2xl font-black mb-3">${p.price}$</p>
+      <a href="https://wa.me/${seller.whatsapp}?text=Salam%20je%20veux%20acheter:%20${encodeURIComponent(p.title)}" class="block text-center bg-black text-white py-2.5 rounded-full font-bold text-sm">Acheter - WhatsApp</a>
+    </div>
+  `).join('');
+}
+render(products);
+
+function filterCat(cat){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('bg-black','text-white','active'));
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.add('bg-white'));
+  event.target.classList.add('bg-black','text-white');
+  if(cat==='all') render(products);
+  else render(products.filter(p=>p.cat===cat));
+}
+
+// Si c'est ton shop, montre bouton ajout
+if(sellers[username]) document.getElementById('ownerAction').classList.remove('hidden');
+
+function addProductPrompt(){
+  let t = prompt('Nom du produit? Ex: E-book Coran Business');
+  if(!t) return;
+  let pr = prompt('Prix en $? Ex: 15');
+  let cat = prompt('Catégorie? ebook / formation / template / app / beat / ia / business');
+  products.push({ id: Date.now(), cat: cat||'ebook', title: t, price: pr||'10', type: '📦 Produit' });
+  localStorage.setItem(key, JSON.stringify(products));
+  render(products);
+}
 </script>
-</body></html>
+</body>
+</html>
