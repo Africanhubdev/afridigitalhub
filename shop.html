@@ -1,117 +1,85 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shop - AFRI DIGITAL HUB</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop - AfriDigital Hub</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-50">
+<body class="bg-black text-white min-h-screen p-4">
+<div class="max-w-5xl mx-auto">
+  <div id="shopHeader" class="flex justify-between items-start"></div>
+  
+  <!-- STATS VENDEUR -->
+  <div id="statsBox" class="hidden mt-6 grid grid-cols-3 gap-3">
+    <div class="bg-zinc-900 p-3 rounded-xl text-center"><p class="text-xs text-zinc-500">JOUÉS</p><p id="statPlay" class="text-xl font-black">0</p></div>
+    <div class="bg-zinc-900 p-3 rounded-xl text-center"><p class="text-xs text-zinc-500">VENDUS</p><p id="statSold" class="text-xl font-black">0</p></div>
+    <div class="bg-zinc-900 p-3 rounded-xl text-center"><p class="text-xs text-zinc-500">REVENU</p><p id="statRev" class="text-xl font-black">0$</p></div>
+  </div>
 
-<!-- HEADER VENDEUR -->
-<div class="bg-white shadow-sm sticky top-0 z-10">
-  <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-    <a href="/" class="font-black text-xl">AFRI DIGITAL HUB</a>
-    <a href="/become-seller.html" class="bg-black text-white px-4 py-2 rounded-full text-sm">+ Boutique</a>
+  <div id="productList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"></div>
+
+  <div id="ownerAction" class="mt-10 bg-zinc-900 p-5 rounded-2xl border border-zinc-800">
+    <div class="flex justify-between items-center">
+      <h3 class="font-bold">Panel Vendeur <span id="kycBadge"></span> <span id="vipBadge"></span></h3>
+      <div class="flex gap-2">
+        <button id="kycBtn" onclick="payKYC('seller')" class="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-bold">KYC Vendeur 1$</button>
+        <button id="vipBtn" onclick="payVIP('seller')" class="bg-gradient-to-r from-purple-500 to-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold">VIP 5$/mois 👑</button>
+      </div>
+    </div>
+    <p id="kycInfo" class="text-xs text-zinc-400 mt-2"></p>
+    <div class="mt-4 flex gap-2">
+      <button onclick="openModal()" class="flex-1 bg-green-500 text-black font-bold py-3 rounded-xl">+ Produit Universel</button>
+      <button onclick="payKYC('buyer')" class="flex-1 bg-zinc-800 py-3 rounded-xl text-xs">Simuler: Je suis Acheteur VIP</button>
+    </div>
   </div>
 </div>
 
-<div class="max-w-6xl mx-auto px-4 py-6">
-  <!-- PROFIL VENDEUR -->
-  <div id="sellerProfile" class="bg-white rounded-2xl p-6 mb-6 text-center shadow-sm">
-    <!-- Rempli par JS -->
-  </div>
-
-  <!-- CATEGORIES FILTRES -->
-  <div class="flex gap-2 overflow-x-auto pb-4 mb-2 no-scrollbar">
-    <button onclick="filterCat('all')" class="cat-btn active bg-black text-white px-4 py-2 rounded-full text-sm whitespace-nowrap">Tout</button>
-    <button onclick="filterCat('ebook')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">📚 E-books</button>
-    <button onclick="filterCat('formation')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">🎓 Formations</button>
-    <button onclick="filterCat('template')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">🎨 Templates</button>
-    <button onclick="filterCat('app')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">💻 Apps/Logiciels</button>
-    <button onclick="filterCat('beat')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">🎵 Beats/Musiques</button>
-    <button onclick="filterCat('ia')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">🤖 Outils IA</button>
-    <button onclick="filterCat('business')" class="cat-btn bg-white border px-4 py-2 rounded-full text-sm whitespace-nowrap">📄 Business/CV</button>
-  </div>
-
-  <!-- GRILLE PRODUITS -->
-  <div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <!-- Rempli par JS -->
-  </div>
-
-  <!-- BOUTON AJOUT PRODUIT (PROPRIO) -->
-  <div id="ownerAction" class="hidden mt-10 text-center">
-    <button onclick="addProductPrompt()" class="bg-green-600 text-white px-6 py-3 rounded-full font-bold"><i class="fas fa-plus"></i> Ajouter un produit</button>
-    <p class="text-xs text-gray-400 mt-2">Visible uniquement par toi</p>
+<!-- MODAL -->
+<div id="modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50">
+  <div class="bg-zinc-900 p-6 rounded-2xl w-full max-w-md border border-zinc-700">
+    <h2 class="font-bold mb-4">Ajouter Produit</h2>
+    <select id="pType" class="w-full p-3 bg-black rounded-lg mb-3 border border-zinc-800"><option value="beat">🎵 Beat / Audio</option><option value="ebook">📚 E-book</option><option value="video">🎬 Vidéo</option><option value="image">🎨 Image / Design</option><option value="autre">📦 Autre</option></select>
+    <input id="pTitle" placeholder="Titre" class="w-full p-3 bg-black rounded-lg mb-3 border border-zinc-800">
+    <input id="pPrice" type="number" placeholder="Prix en $" class="w-full p-3 bg-black rounded-lg mb-3 border border-zinc-800">
+    <input id="pFile" type="file" accept="audio/*,image/*,video/*,.pdf" class="w-full p-2 bg-black rounded-lg mb-3 text-sm border border-zinc-800">
+    <div class="flex gap-2"><button onclick="closeModal()" class="flex-1 bg-zinc-800 py-3 rounded-xl">Annuler</button><button onclick="saveProduct()" class="flex-1 bg-green-500 text-black font-bold py-3 rounded-xl">Publier</button></div>
   </div>
 </div>
 
 <script>
-// 1. RECUPERE USERNAME
-const params = new URLSearchParams(window.location.search);
-const username = params.get('u') || 'BEATMAN';
-const sellers = JSON.parse(localStorage.getItem('afri_sellers') || '{}');
-const seller = sellers[username] || { name: username, bio: 'Créateur digital halal sur AFRI DIGITAL HUB', whatsapp: '243', verified: true };
+const username = new URLSearchParams(window.location.search).get('u') || 'BEATMAN';
+let products = JSON.parse(localStorage.getItem('adh_products_'+username)||'[]');
+let sellerKYC = JSON.parse(localStorage.getItem('adh_kyc_seller_'+username)||'false');
+let sellerVIP = JSON.parse(localStorage.getItem('adh_vip_seller_'+username)||'false');
+let buyerVIP = JSON.parse(localStorage.getItem('adh_vip_buyer')||'false');
+let stats = JSON.parse(localStorage.getItem('adh_stats_'+username)||'{"plays":0,"solds":0}');
+let purchased = JSON.parse(localStorage.getItem('adh_purchased')||'[]');
 
-// 2. PROFIL
-document.getElementById('sellerProfile').innerHTML = `
-  <div class="w-20 h-20 bg-black text-white rounded-full flex items-center justify-center text-2xl font-black mx-auto mb-3">${seller.name[0].toUpperCase()}</div>
-  <h1 class="text-2xl font-black flex items-center justify-center gap-2">@${username} ${seller.verified? '<span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">✓ Vérifié</span>' : ''} <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">HALAL</span></h1>
-  <p class="text-gray-500 mt-2">${seller.bio}</p>
-  <a href="https://wa.me/${seller.whatsapp}" class="inline-block mt-4 bg-green-500 text-white px-6 py-2 rounded-full"><i class="fab fa-whatsapp"></i> Contacter sur WhatsApp</a>
-`;
+function render(){
+  document.getElementById('shopHeader').innerHTML = `<div><h1 class="text-3xl font-black">@${username.toUpperCase()} ${sellerKYC?'✅':''} ${sellerVIP?'👑':''}</h1><p class="text-sm text-zinc-400">${sellerKYC?'Vendeur Vérifié - Produits illimités':'Non Vérifié - 3 produits max'} | ${buyerVIP?'Acheteur VIP - Full Play':'Acheteur Standard - 30s preview'}</p></div><a href="market.html" class="bg-zinc-800 px-4 py-2 rounded-full text-sm">Marché</a>`;
+  document.getElementById('kycBadge').innerText = sellerKYC? '✅':'❌'; document.getElementById('vipBadge').innerText = sellerVIP? '👑 VIP':'';
+  document.getElementById('kycInfo').innerText = sellerKYC? (sellerVIP? 'VIP ACTIF: Tes clients peuvent écouter full + tu es en haut du marché':'KYC OK - Tes clients ont 30s preview. Passe VIP pour full play + boost') : `Tu as ${products.length}/3 produits. Fais KYC 1$ pour débloquer.`;
+  document.getElementById('statsBox').classList.remove('hidden');
+  document.getElementById('statPlay').innerText = stats.plays; document.getElementById('statSold').innerText = stats.solds; document.getElementById('statRev').innerText = (stats.solds * 10)+'$';
+  document.getElementById('kycBtn').style.display = sellerKYC?'none':'block';
+  document.getElementById('vipBtn').style.display = sellerVIP?'none':'block';
 
-// 3. PRODUITS - Par défaut ta vision
-let defaultProducts = [
-  { id:1, cat:'ebook', title:'E-book Business Halal en Afrique', price:'15', type:'📚 E-book' },
-  { id:2, cat:'template', title:'Pack 100 Templates Canva Afro', price:'25', type:'🎨 Template' },
-  { id:3, cat:'formation', title:'Formation Dropshipping Halal 2026', price:'49', type:'🎓 Formation' },
-  { id:4, cat:'beat', title:'Pack 10 Beats Afro Trap + Licence', price:'30', type:'🎵 Beat' },
-  { id:5, cat:'app', title:'Logo Maker Afro - App', price:'19', type:'💻 App' },
-  { id:6, cat:'ia', title:'Outil IA Générateur Business Plan Halal', price:'35', type:'🤖 Outil IA' },
-  { id:7, cat:'business', title:'Business Plan Boutique Halal + CV Pro', price:'20', type:'📄 Business' },
-  { id:8, cat:'formation', title:'Cours Montage Vidéo CapCut Pro', price:'29', type:'🎓 Cours' },
-];
-
-let key = 'afri_products_' + username;
-let products = JSON.parse(localStorage.getItem(key) || 'null') || defaultProducts;
-
-function render(list){
-  document.getElementById('productGrid').innerHTML = list.map(p => `
-    <div class="bg-white rounded-2xl p-4 shadow-sm border hover:shadow-md transition">
-      <div class="flex justify-between items-start mb-3">
-        <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">${p.type}</span>
-        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">HALAL ✓</span>
-      </div>
-      <h3 class="font-bold leading-tight mb-2">${p.title}</h3>
-      <p class="text-2xl font-black mb-3">${p.price}$</p>
-      <a href="https://wa.me/${seller.whatsapp}?text=Salam%20je%20veux%20acheter:%20${encodeURIComponent(p.title)}" class="block text-center bg-black text-white py-2.5 rounded-full font-bold text-sm">Acheter - WhatsApp</a>
-    </div>
-  `).join('');
+  document.getElementById('productList').innerHTML = products.map((p,i)=>{
+    const isBought = purchased.includes(i);
+    return `<div class="bg-zinc-900 p-4 rounded-xl border ${sellerVIP?'border-yellow-500/30':''}"><div class="flex justify-between"><span class="text-xs text-zinc-500 uppercase">${p.type} ${p.type==='beat'&&isBought?'• ACHETÉ ✅':''}</span><span class="text-xs">▶ ${p.plays||0} plays</span></div><h3 class="font-bold mt-1">${p.title}</h3>
+    <div class="mt-3 bg-black rounded-lg p-2">${p.type==='beat'?`<audio id="aud${i}" controls src="${p.data}" class="w-full" onplay="addPlay(${i})" ontimeupdate="limitPlay(this,${i})"></audio>`: p.type==='image'?`<img src="${p.data}" class="rounded w-full">`:`<p class="text-xs">Fichier: ${p.fileName}</p>`}</div>
+    <div class="flex justify-between items-center mt-3"><span class="font-black text-green-400">${p.price}$</span><button onclick="buy(${i})" class="bg-white text-black px-4 py-2 rounded-full font-bold text-sm">${isBought?'Télécharger':'Acheter'}</button></div></div>`
+  }).join('') || '<p class="text-zinc-500 col-span-2">Aucun produit</p>';
 }
-render(products);
-
-function filterCat(cat){
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('bg-black','text-white','active'));
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.add('bg-white'));
-  event.target.classList.add('bg-black','text-white');
-  if(cat==='all') render(products);
-  else render(products.filter(p=>p.cat===cat));
-}
-
-// Si c'est ton shop, montre bouton ajout
-document.getElementById('ownerAction').classList.remove('hidden');
-
-function addProductPrompt(){
-  let t = prompt('Nom du produit? Ex: E-book Coran Business');
-  if(!t) return;
-  let pr = prompt('Prix en $? Ex: 15');
-  let cat = prompt('Catégorie? ebook / formation / template / app / beat / ia / business');
-  products.push({ id: Date.now(), cat: cat||'ebook', title: t, price: pr||'10', type: '📦 Produit' });
-  localStorage.setItem(key, JSON.stringify(products));
-  render(products);
-}
+function openModal(){ if(!sellerKYC && products.length>=3){ alert('Limite 3 sans KYC. Fais KYC Vendeur 1$'); return; } document.getElementById('modal').classList.remove('hidden'); document.getElementById('modal').classList.add('flex'); }
+function closeModal(){ document.getElementById('modal').classList.add('hidden'); }
+function payKYC(who){ if(who==='seller'){ const c=prompt("KYC Vendeur 1$ - ADH/SDA/USDT/USD ?"); if(c){ localStorage.setItem('adh_kyc_seller_'+username,'true'); sellerKYC=true; alert('KYC Vendeur OK ✅'); render(); }} else { localStorage.setItem('adh_vip_buyer','true'); buyerVIP=true; alert('Mode Acheteur VIP activé 👑 - Tu peux écouter full maintenant'); render(); }}
+function payVIP(who){ const c=prompt("VIP Vendeur 5$/mois - ADH/SDA/USDT/USD ?"); if(c){ localStorage.setItem('adh_vip_seller_'+username,'true'); sellerVIP=true; alert('VIP ACTIVÉ 👑 - Tu es en haut du marché!'); render(); }}
+function saveProduct(){ const t=document.getElementById('pTitle').value, pr=document.getElementById('pPrice').value, ty=document.getElementById('pType').value, f=document.getElementById('pFile').files[0]; if(!t||!pr) return alert('Titre+Prix'); const rd=new FileReader(); rd.onload=e=>{ products.push({title:t, price:pr, type:ty, data:e.target.result, fileName:f?f.name:'', plays:0}); localStorage.setItem('adh_products_'+username,JSON.stringify(products)); closeModal(); render(); }; if(f) rd.readAsDataURL(f); else { products.push({title:t, price:pr, type:ty, data:'', fileName:'', plays:0}); localStorage.setItem('adh_products_'+username,JSON.stringify(products)); closeModal(); render(); } }
+function addPlay(i){ products[i].plays=(products[i].plays||0)+1; stats.plays++; localStorage.setItem('adh_products_'+username,JSON.stringify(products)); localStorage.setItem('adh_stats_'+username,JSON.stringify(stats)); render(); }
+function limitPlay(el,i){ const canFull = buyerVIP || sellerVIP || purchased.includes(i); if(!canFull && el.currentTime>30){ el.pause(); el.currentTime=0; alert('Preview 30s seulement - Achète ou passe Acheteur VIP pour full play 👑'); } }
+function buy(i){ if(purchased.includes(i)){ alert('Téléchargement... (En V2 finale, téléchargement sécurisé + licence)'); return; } if(confirm(`Acheter ${products[i].title} à ${products[i].price}$ ? (Commission 15% pour AfriDigital)`)){ purchased.push(i); stats.solds++; localStorage.setItem('adh_purchased',JSON.stringify(purchased)); localStorage.setItem('adh_stats_'+username,JSON.stringify(stats)); alert('Paiement simulé OK! Tu peux maintenant télécharger full + licence légale.'); render(); } }
+render();
 </script>
 </body>
 </html>
