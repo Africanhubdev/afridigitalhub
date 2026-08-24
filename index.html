@@ -3,26 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Afridigital Hub - Marketplace SDA</title>
+<title>Afridigital Hub - Marketplace Africain</title>
 <style>
-body{font-family:Arial;background:#0f172a;color:#fff;text-align:center;padding:20px}
-.pay-btn{background:#1e293b;border:1px solid #334155;padding:15px;margin:8px;border-radius:12px;display:inline-block;min-width:110px;cursor:pointer}
-.pay-btn.active:hover{background:#3b82f6}
-small{color:#94a3b8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);color:#fff;min-height:100vh;padding:20px;text-align:center}
+h1{font-size:32px;margin:20px 0 10px;background:linear-gradient(90deg,#22c55e,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:20px;color:#e2e8f0;margin-bottom:8px}
+.sub{color:#94a3b8;margin-bottom:25px}
+#tauxADH{color:#22c55e}
+#pri{background:#1e293b;border:1px solid #334155;display:inline-block;padding:8px 16px;border-radius:20px;font-size:14px;margin-bottom:25px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:600px;margin:0 auto}
+.pay-btn{background:rgba(30,41,59,0.8);backdrop-filter:blur(10px);border:1px solid #334155;padding:18px 10px;border-radius:16px;cursor:pointer;transition:0.3s}
+.pay-btn:hover{transform:translateY(-3px);border-color:#22c55e;box-shadow:0 10px 25px rgba(34,197,94,0.2)}
+.pay-btn:first-child{border-color:#22c55e;background:linear-gradient(135deg,#1e293b,#14532d)}
+.pay-btn small{display:block;margin-top:6px;color:#94a3b8;font-size:12px}
+.btn-seller{display:inline-block;margin-top:35px;background:#3b82f6;color:#fff;padding:14px 28px;border-radius:12px;text-decoration:none;font-weight:bold;transition:0.3s}
+.btn-seller:hover{background:#2563eb;transform:scale(1.05)}
+.foot{margin-top:15px;color:#64748b;font-size:12px}
 </style>
 </head>
 <body>
 
 <h1>Afridigital Hub</h1>
 <h2>1 SDA = <span id="tauxADH">5</span> ADH = 2 ZMAF</h2>
-<p>Prix principal: <span id="prixPrincipal">1</span> SDA</p>
+<div id="pri">Prix principal: <span id="prixPrincipal">1</span> SDA</div>
 
-<div id="paiementsGrid" style="margin-top:20px"></div>
+<div id="paiementsGrid" class="grid"></div>
 
-<div style="text-align:center;margin-top:30px">
-<a href="become-seller.html" style="display:inline-block;background:#3b82f6;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none">Devenir Vendeur</a>
-<p style="color:#aaa;font-size:13px;margin-top:10px">Paiement sécurisé via SDA / ADH / ZMAF</p>
-</div>
+<a href="become-seller.html" class="btn-seller">Devenir Vendeur</a>
+<p class="foot">Paiement sécurisé via SDA / ADH / ZMAF • Propulsé par Zoomer Africa</p>
 
 <script>
 const CONFIG = {
@@ -41,21 +50,20 @@ const CONFIG = {
     { code: 'USD', nom: 'USD', actif: true }
   ]
 };
-
-function afficher() {
-  document.getElementById('tauxADH').innerText = CONFIG.tauxADH;
-  document.getElementById('prixPrincipal').innerText = CONFIG.prixBaseSDA;
-  const grid = document.getElementById('paiementsGrid');
-  grid.innerHTML = '';
-  CONFIG.paiements.forEach(p => {
+function afficher(){
+  document.getElementById('tauxADH').innerText=CONFIG.tauxADH;
+  document.getElementById('prixPrincipal').innerText=CONFIG.prixBaseSDA;
+  const grid=document.getElementById('paiementsGrid');
+  grid.innerHTML='';
+  CONFIG.paiements.forEach(p=>{
     if(p.actif){
-      let prix = p.code === 'ADH' ? CONFIG.tauxADH : p.code === 'ZMAF' ? CONFIG.tauxZMAF : CONFIG.prixBaseSDA;
-      const btn = document.createElement('div');
-      btn.className = 'pay-btn active';
-      if(p.code === 'ADH' || p.code === 'ZMAF'){
-        btn.innerHTML = `${p.nom}<br><small>${prix} ${p.code}</small>`;
-      } else {
-        btn.innerHTML = `${p.nom}<br><small>Payer en ${p.code}</small>`;
+      let prix=p.code==='ADH'?CONFIG.tauxADH:p.code==='ZMAF'?CONFIG.tauxZMAF:CONFIG.prixBaseSDA;
+      const btn=document.createElement('div');
+      btn.className='pay-btn active';
+      if(p.code==='ADH'||p.code==='ZMAF'){
+        btn.innerHTML=`${p.nom}<br><small>${prix} ${p.code}</small>`;
+      }else{
+        btn.innerHTML=`${p.nom}<br><small>Payer en ${p.code}</small>`;
       }
       grid.appendChild(btn);
     }
