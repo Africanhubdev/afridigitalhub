@@ -1,8 +1,26 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin CTO</title><style>body{background:#020617;color:#fff;font-family:Arial;padding:15px} .card{background:#1e293b;padding:15px;border-radius:12px;margin:10px 0} table{width:100%;font-size:13px} td,th{padding:8px;border-bottom:1px solid #334155;text-align:left}</style></head><body>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin CTO</title>
+<style>body{background:#020617;color:#fff;font-family:Arial;padding:12px}.card{background:#1e293b;padding:12px;border-radius:12px;margin:10px 0;border:1px solid #334155}table{width:100%;font-size:11px}td,th{padding:6px;border-bottom:1px solid #334155} img.kyc{width:80px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #475569;cursor:pointer} .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:99} .modal img{max-width:95%;max-height:85%;border-radius:10px} button{padding:6px 10px;border-radius:6px;border:none;font-weight:bold;cursor:pointer;margin:2px}</style>
+</head><body>
 <h2>Admin CTO - AFRI DIGITAL HUB</h2>
-<div class="card">💰 Commission Totale: <b id="totalComm" style="color:#22c55e;font-size:20px">0 ADH</b><br><small>5% sur chaque vente - Auto converti en ADH natif</small></div>
-<div class="card">⚙️ Taux: 1 SDA = 5 ADH = 2 ZMAF | 1 USDT = 1 SDA | VIP = 5 USDT/mois = 25 ADH = 10 ZMAF = 5 SDA<br><button onclick="localStorage.clear();location.reload()" style="background:#ef4444;color:#fff">RESET DATA TEST</button></div>
-<div class="card"><h3>Vendeurs / KYC</h3><table id="kycTable"><tr><th>Shop</th><th>Nom</th><th>Tel</th><th>VIP</th><th>Action</th></tr></table></div>
+<div class="card">💰 Commission Totale: <b id="totalComm" style="color:#22c55e;font-size:20px">0 ADH</b><br><small>5% auto en ADH natif | VIP = 5 USDT = 25 ADH = 10 ZMAF</small></div>
+<div class="card"><table id="kycTable"><tr><th>Shop</th><th>Infos</th><th>Recto</th><th>Verso</th><th>Selfie</th><th>Action</th></tr></table></div>
+<div class="modal" id="modal" onclick="this.style.display='none'"><img id="modalImg"></div>
 <script>
-let html='';let total=0;for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k.startsWith('kyc_')){let d=JSON.parse(localStorage.getItem(k));let shop=d.shop;let vip=localStorage.getItem('vip_'+shop)?'✅':'❌';let sales=localStorage.getItem('sales_'+shop)||0;total+=sales*0.05*5;html+=`<tr><td>@${shop}</td><td>${d.nom}</td><td>${d.tel}</td><td>${vip}</td><td><button onclick="localStorage.setItem('sales_${shop}',${parseInt(sales)+1});location.reload()">+1 Vente SDA</button></td></tr>`}}document.getElementById('kycTable').innerHTML+=html;document.getElementById('totalComm').innerText=total.toFixed(1)+' ADH';
+function showImg(src){document.getElementById('modalImg').src=src;document.getElementById('modal').style.display='flex'}
+let html='';let total=0;
+for(let i=0;i<localStorage.length;i++){
+ let k=localStorage.key(i);
+ if(k.startsWith('kyc_')){
+   let d=JSON.parse(localStorage.getItem(k));
+   let vip=localStorage.getItem('vip_'+d.shop)?'✅':'❌';
+   let sales=localStorage.getItem('sales_'+d.shop)||0;
+   total+=sales*0.05*5;
+   let recto=d.recto?`<img class="kyc" src="${d.recto}" onclick="showImg('${d.recto}')">`:'❌';
+   let verso=d.verso?`<img class="kyc" src="${d.verso}" onclick="showImg('${d.verso}')">`:'❌';
+   let selfie=d.selfie?`<img class="kyc" src="${d.selfie}" onclick="showImg('${d.selfie}')">`:'❌';
+   html+=`<tr><td>@${d.shop}<br>${vip} ${d.tel}</td><td>${d.nom}<br><small>${d.piece}</small></td><td>${recto}</td><td>${verso}</td><td>${selfie}</td><td><button style="background:#22c55e;color:#fff" onclick="alert('Vendeur @${d.shop} VALIDÉ ✅')">Valider</button><button style="background:#ef4444;color:#fff" onclick="localStorage.removeItem('kyc_${d.shop}');location.reload()">Refuser</button></td></tr>`;
+ }
+}
+document.getElementById('kycTable').innerHTML+=html;
+document.getElementById('totalComm').innerText=total.toFixed(1)+' ADH';
 </script></body></html>
