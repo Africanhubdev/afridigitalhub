@@ -61,16 +61,29 @@ function afficher() {
   document.getElementById('prixPrincipal').innerText = `${CONFIG.prixBaseSDA} SDA`;
   const grid = document.getElementById('payGrid');
   grid.innerHTML = '';
-  CONFIG.paiements.forEach(p => {
+  CON  CONFIG.paiements.forEach(p => {
     if(p.actif){
+      let prix = p.code === 'ADH' ? CONFIG.tauxADH : p.code === 'ZMAF' ? CONFIG.tauxZMAF : CONFIG.prixBaseSDA;
+      if(p.code !== 'SDA' && p.code !== 'ADH' && p.code !== 'ZMAF'){
+        prix = CONFIG.prixBaseSDA;
+      }
+      const btn = document.createElement('div');
+      btn.className = 'pay-btn active';
+      if(p.code === 'ADH' || p.code === 'ZMAF'){
+        btn.innerHTML = `${p.nom}<br><small>${prix} ${p.code}</small>`;
+      } else {
+        btn.innerHTML = `${p.nom}<br><small>Payer en ${p.code}</small>`;
+      }
+      grid.appendChild(btn);
+    }
+  });
           let prix = p.code === 'ADH' ? CONFIG.tauxADH : p.code === 'ZMAF' ? CONFIG.tauxZMAF : CONFIG.prixBaseSDA;
       if(p.code !== 'SDA' && p.code !== 'ADH') prix = prix + ' ~'; // pour monnaies fiat on calculera plus tard
       const btn = document.createElement('div');
       btn.className = 'pay-btn active';
       btn.innerHTML = `${p.nom}<br><small>${p.code === 'ADH' ? prix+' '+p.code : 'Payer en '+p.code}</small>`;
       grid.appendChild(btn);
-    }
-  });
+    
 }
 afficher();
 </script>
