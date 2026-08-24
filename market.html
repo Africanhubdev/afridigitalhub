@@ -1,51 +1,49 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Market - Top Produits | AfriDigital Hub</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body class="bg-black text-white min-h-screen p-4">
-<div class="max-w-5xl mx-auto">
-<div class="flex justify-between items-center">
-<a href="index.html" class="text-zinc-400"><i class="fa fa-arrow-left"></i> Accueil</a>
-<a href="shop.html" class="bg-white text-black px-4 py-2 rounded-full font-bold text-sm">Aller au Shop</a>
-</div>
-
-<h1 class="text-3xl font-black mt-8">🏆 Market Intelligence</h1>
-<p class="text-zinc-400 text-sm">Classement automatique des produits les plus performants</p>
-
-<div class="mt-6 grid grid-cols-2 gap-3">
-<div class="bg-zinc-900 p-4 rounded-2xl border border-zinc-800">
-<p class="text-zinc-500 text-xs">TOP VENTES SEMAINE</p>
-<div id="topWeek" class="mt-2 space-y-2 text-sm"></div>
-</div>
-<div class="bg-zinc-900 p-4 rounded-2xl border border-yellow-500/30">
-<p class="text-yellow-500 text-xs font-bold">TOP VENTES MOIS</p>
-<div id="topMonth" class="mt-2 space-y-2 text-sm"></div>
-</div>
-</div>
-
-<div id="marketGrid" class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Market - AFRI HUB</title>
+<style>body{background:#020617;color:#fff;font-family:Arial;padding:12px}.card{background:#1e293b;padding:12px;border-radius:12px;margin:8px 0;border:1px solid #334155;display:flex;gap:10px;align-items:center}.boost{border:2px solid gold;box-shadow:0 0 10px gold}.vip{font-size:10px;background:gold;color:#000;padding:2px 6px;border-radius:10px} button{padding:8px 12px;border-radius:8px;border:none;font-weight:bold}</style>
+</head><body>
+<h2>🌍 AFRI DIGITAL HUB - Marché</h2>
+<small>Tri : VIP BOOSTER en haut → KYC → Gratuit (3 produits max)</small>
+<div id="market"></div>
+<div class="card" style="display:block;background:#0f172a">
+<h3>💸 Retrait Vendeur (Commission 2% retrait)</h3>
+<input id="retShop" placeholder="Ton shop @"><input id="retAmount" placeholder="Montant ex: 50 SDA">
+<select id="retMethod"><option>USDT TRC20</option><option>ADH Natif</option><option>Mobile Money FCFA - Orange/MTN/Wave</option><option>M-Pesa RDC</option><option>PayPal/Visa</option></select>
+<input id="retNum" placeholder="Adresse / Numéro pour recevoir">
+<button style="background:#22c55e;color:#fff;width:100%" onclick="retrait()">Demander Retrait - 2% frais</button>
+<p id="retStatus" style="font-size:12px"></p>
 </div>
 
 <script>
-const products = JSON.parse(localStorage.getItem('afri_products')||'[]');
-function renderMarket(){
-  const sortedWeek = [...products].sort((a,b)=>(b.views||0)-(a.views||0)).slice(0,3);
-  const sortedMonth = [...products].sort((a,b)=>(b.sales||0)-(a.sales||0)).slice(0,3);
-  document.getElementById('topWeek').innerHTML = sortedWeek.map((p,i)=>`<div class="flex justify-between"><span>${i+1}. ${p.name.substring(0,18)}</span><b class="text-white">${p.views||0} vues</b></div>`).join('') || '<span class="text-zinc-600">Pas encore de données</span>';
-  document.getElementById('topMonth').innerHTML = sortedMonth.map((p,i)=>`<div class="flex justify-between"><span>${i+1}. ${p.name.substring(0,18)}</span><b class="text-yellow-400">${p.sales||0} ventes</b></div>`).join('') || '<span class="text-zinc-600">Pas encore de données</span>';
-  document.getElementById('marketGrid').innerHTML = products.map(p=>`
-  <div class="bg-zinc-900 rounded-2xl p-3 border border-zinc-800">
-    <img src="${p.image||'https://via.placeholder.com/300'}" class="w-full h-32 object-cover rounded-xl">
-    <p class="font-bold mt-2 text-sm truncate">${p.name}</p>
-    <p class="text-green-400 font-black">${p.price} $</p>
-    <div class="flex gap-2 text-[11px] text-zinc-500 mt-1"><span><i class="fa fa-eye"></i> ${p.views||0}</span><span><i class="fa fa-fire"></i> ${p.sales||0}</span></div>
-  </div>`).join('');
+let shops=[];
+for(let i=0;i<localStorage.length;i++){
+ let k=localStorage.key(i);
+ if(k.startsWith('kyc_')){
+   let d=JSON.parse(localStorage.getItem(k));
+   let vip=localStorage.getItem('vip_'+d.shop);
+   let isVip=vip&&new Date(vip)>new Date();
+   let sales=localStorage.getItem('sales_'+d.shop)||0;
+   let kycPaid=localStorage.getItem('kyc_paid_'+d.shop)==='paid';
+   shops.push({shop:d.shop,nom:d.nom,vip:isVip,sales:sales,kyc:kycPaid});
+ }
 }
-renderMarket();
+if(shops.length==0) shops=[{shop:'demo',nom:'Boutique Demo',vip:true,sales:12,kyc:true},{shop:'afrobeat',nom:'Afro Beat',vip:false,sales:5,kyc:true},{shop:'newshop',nom:'New Sans KYC',vip:false,sales:0,kyc:false}];
+// Tri : VIP d'abord
+shops.sort((a,b)=> (b.vip?1:0)-(a.vip?1:0));
+
+let html='';
+shops.forEach(s=>{
+ html+=`<div class="card ${s.vip?'boost':''}"><div style="flex:1"><b>@${s.shop}</b> ${s.vip?'<span class="vip">VIP BOOST ⭐</span>':''} ${!s.kyc?'<span style="font-size:10px;color:#ef4444">MAX 3 PRODUITS</span>':''}<br><small>${s.nom} - Ventes: ${s.sales} SDA</small></div><a href="shop.html?u=${s.shop}"><button style="background:#3b82f6;color:#fff">Voir Shop</button></a></div>`;
+});
+document.getElementById('market').innerHTML=html;
+
+function retrait(){
+ let shop=document.getElementById('retShop').value;
+ let amt=parseFloat(document.getElementById('retAmount').value);
+ if(!shop||!amt){alert('Remplis shop + montant');return}
+ let fee=amt*0.02;let net=amt-fee;
+ let method=document.getElementById('retMethod').value;
+ document.getElementById('retStatus').innerText=`✅ Demande retrait @${shop} : ${amt} → Frais CTO 2% = ${fee.toFixed(2)} ADH | Tu reçois ${net.toFixed(2)} via ${method}. Traitement 24h.`;
+ localStorage.setItem('retrait_'+shop+'_'+Date.now(),JSON.stringify({shop,amt,fee,method}));
+}
 </script>
-</body>
-</html>
+</body></html>
