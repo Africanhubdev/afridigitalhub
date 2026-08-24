@@ -1,44 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AFRI DIGITAL HUB</title>
+<title>Afridigital Hub - Marketplace SDA</title>
 <style>
-body { background: #0a0a0a; color: white; font-family: Arial; margin: 0; padding: 20px; text-align: center; }
-.header { color: #00FF88; font-size: 32px; font-weight: bold; margin-top: 30px; }
-.sub { color: #aaa; margin: 10px 0 30px 0; }
-.card { background: #1a1a1a; border-radius: 15px; padding: 20px; margin: 15px auto; max-width: 400px; border: 1px solid #222; }
-.price { font-size: 28px; font-weight: bold; }
-.taux { background: #00FF88; color: black; display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; margin: 15px 0; }
-.pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-.pay-btn { background: #222; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; font-weight: bold; }
-.pay-btn.active { background: #00FF88; color: black; border-color: #00FF88; }
-.note { color: #666; font-size: 12px; margin-top: 30px; }
+body{font-family:Arial;background:#0f172a;color:#fff;text-align:center;padding:20px}
+.pay-btn{background:#1e293b;border:1px solid #334155;padding:15px;margin:8px;border-radius:12px;display:inline-block;min-width:110px;cursor:pointer}
+.pay-btn.active:hover{background:#3b82f6}
+small{color:#94a3b8}
 </style>
 </head>
 <body>
 
-<div class="header"><img src="IMG-20260824-WA6920.jpg" style="height:60px; border-radius:10px;"></div>
-<div class="sub">La marketplace 100% digitale d'Afrique</div>
-<div style="display:flex; gap:10px; margin: 0 0 20px 0;">
-<a href="shop.html" style="background:white; color:black; padding:12px 20px; border-radius:30px; font-weight:bold; text-decoration:none; flex:1; text-align:center;">🛒 VOIR LE SHOP</a>
-<a href="market.html" style="background:#FFD700; color:black; padding:12px 20px; border-radius:30px; font-weight:bold; text-decoration:none; flex:1; text-align:center;">🏆 TOP MARKET</a>
-</div>
-<div class="card">
-  <div>Produit Test : E-book Business</div>
-  <div class="price" id="prixPrincipal">1 SDA</div>
-  <div class="taux" id="tauxADH">1 SDA = 5 ADH</div>
-  <div style="color:#aaa; font-size:14px;">Choisis ton paiement</div>
-  <div class="pay-grid" id="payGrid"></div>
-</div>
+<h1>Afridigital Hub</h1>
+<h2>1 SDA = <span id="tauxADH">5</span> ADH = 2 ZMAF</h2>
+<p>Prix principal: <span id="prixPrincipal">1</span> SDA</p>
 
-<div class="note">Pour changer le taux : modifie CONFIG plus bas dans le code<br>582 Contributeurs | 34 Membres</div>
+<div id="paiementsGrid" style="margin-top:20px"></div>
+
+<div style="text-align:center;margin-top:30px">
+<a href="become-seller.html" style="display:inline-block;background:#3b82f6;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none">Devenir Vendeur</a>
+<p style="color:#aaa;font-size:13px;margin-top:10px">Paiement sécurisé via SDA / ADH / ZMAF</p>
+</div>
 
 <script>
-// ================= CONFIG - TOI TU MODIFIES ICI =================
-
-// ===============================================================
 const CONFIG = {
   prixBaseSDA: 1,
   tauxADH: 5,
@@ -55,18 +41,15 @@ const CONFIG = {
     { code: 'USD', nom: 'USD', actif: true }
   ]
 };
-  
+
 function afficher() {
-  document.getElementById('tauxADH').innerText = `1 SDA = ${CONFIG.tauxADH} ADH`;
-  document.getElementById('prixPrincipal').innerText = `${CONFIG.prixBaseSDA} SDA`;
-  const grid = document.getElementById('payGrid');
+  document.getElementById('tauxADH').innerText = CONFIG.tauxADH;
+  document.getElementById('prixPrincipal').innerText = CONFIG.prixBaseSDA;
+  const grid = document.getElementById('paiementsGrid');
   grid.innerHTML = '';
-  CON  CONFIG.paiements.forEach(p => {
+  CONFIG.paiements.forEach(p => {
     if(p.actif){
       let prix = p.code === 'ADH' ? CONFIG.tauxADH : p.code === 'ZMAF' ? CONFIG.tauxZMAF : CONFIG.prixBaseSDA;
-      if(p.code !== 'SDA' && p.code !== 'ADH' && p.code !== 'ZMAF'){
-        prix = CONFIG.prixBaseSDA;
-      }
       const btn = document.createElement('div');
       btn.className = 'pay-btn active';
       if(p.code === 'ADH' || p.code === 'ZMAF'){
@@ -77,19 +60,8 @@ function afficher() {
       grid.appendChild(btn);
     }
   });
-          let prix = p.code === 'ADH' ? CONFIG.tauxADH : p.code === 'ZMAF' ? CONFIG.tauxZMAF : CONFIG.prixBaseSDA;
-      if(p.code !== 'SDA' && p.code !== 'ADH') prix = prix + ' ~'; // pour monnaies fiat on calculera plus tard
-      const btn = document.createElement('div');
-      btn.className = 'pay-btn active';
-      btn.innerHTML = `${p.nom}<br><small>${p.code === 'ADH' ? prix+' '+p.code : 'Payer en '+p.code}</small>`;
-      grid.appendChild(btn);
-    
 }
 afficher();
 </script>
-<div style="text-align:center;margin-top:30px">
-<a href="become-seller.html" style="display:inline-block;padding:15px 25px;background:#00FF88;color:#000;font-weight:bold;border-radius:12px;text-decoration:none">+ OUVRIR MA BOUTIQUE</a>
-<p style="color:#aaa;font-size:13px;margin-top:8px">Deviens vendeur et crée ton shop en 30s</p>
-</div>
 </body>
 </html>
