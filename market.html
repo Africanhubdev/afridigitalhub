@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Market - Top Produits | AfriDigital Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-black text-white min-h-screen p-4">
+<div class="max-w-5xl mx-auto">
+<div class="flex justify-between items-center">
+<a href="index.html" class="text-zinc-400"><i class="fa fa-arrow-left"></i> Accueil</a>
+<a href="shop.html" class="bg-white text-black px-4 py-2 rounded-full font-bold text-sm">Aller au Shop</a>
+</div>
+
+<h1 class="text-3xl font-black mt-8">🏆 Market Intelligence</h1>
+<p class="text-zinc-400 text-sm">Classement automatique des produits les plus performants</p>
+
+<div class="mt-6 grid grid-cols-2 gap-3">
+<div class="bg-zinc-900 p-4 rounded-2xl border border-zinc-800">
+<p class="text-zinc-500 text-xs">TOP VENTES SEMAINE</p>
+<div id="topWeek" class="mt-2 space-y-2 text-sm"></div>
+</div>
+<div class="bg-zinc-900 p-4 rounded-2xl border border-yellow-500/30">
+<p class="text-yellow-500 text-xs font-bold">TOP VENTES MOIS</p>
+<div id="topMonth" class="mt-2 space-y-2 text-sm"></div>
+</div>
+</div>
+
+<div id="marketGrid" class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+</div>
+
+<script>
+const products = JSON.parse(localStorage.getItem('afri_products')||'[]');
+function renderMarket(){
+  const sortedWeek = [...products].sort((a,b)=>(b.views||0)-(a.views||0)).slice(0,3);
+  const sortedMonth = [...products].sort((a,b)=>(b.sales||0)-(a.sales||0)).slice(0,3);
+  document.getElementById('topWeek').innerHTML = sortedWeek.map((p,i)=>`<div class="flex justify-between"><span>${i+1}. ${p.name.substring(0,18)}</span><b class="text-white">${p.views||0} vues</b></div>`).join('') || '<span class="text-zinc-600">Pas encore de données</span>';
+  document.getElementById('topMonth').innerHTML = sortedMonth.map((p,i)=>`<div class="flex justify-between"><span>${i+1}. ${p.name.substring(0,18)}</span><b class="text-yellow-400">${p.sales||0} ventes</b></div>`).join('') || '<span class="text-zinc-600">Pas encore de données</span>';
+  document.getElementById('marketGrid').innerHTML = products.map(p=>`
+  <div class="bg-zinc-900 rounded-2xl p-3 border border-zinc-800">
+    <img src="${p.image||'https://via.placeholder.com/300'}" class="w-full h-32 object-cover rounded-xl">
+    <p class="font-bold mt-2 text-sm truncate">${p.name}</p>
+    <p class="text-green-400 font-black">${p.price} $</p>
+    <div class="flex gap-2 text-[11px] text-zinc-500 mt-1"><span><i class="fa fa-eye"></i> ${p.views||0}</span><span><i class="fa fa-fire"></i> ${p.sales||0}</span></div>
+  </div>`).join('');
+}
+renderMarket();
+</script>
+</body>
+</html>
