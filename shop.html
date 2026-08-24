@@ -7,39 +7,40 @@
 </head>
 <body class="bg-black text-white min-h-screen p-4">
 <div class="max-w-5xl mx-auto">
-  <div id="shopHeader" class="flex justify-between items-start"></div>
-  
-  <!-- STATS VENDEUR -->
-  <div id="statsBox" class="hidden mt-6 grid grid-cols-3 gap-3">
-    <div class="bg-zinc-900 p-3 rounded-xl text-center"><p class="text-xs text-zinc-500">JOUÉS</p><p id="statPlay" class="text-xl font-black">0</p></div>
-    <div class="bg-zinc-900 p-3 rounded-xl text-center"><p class="text-xs text-zinc-500">VENDUS</p><p id="statSold" class="text-xl font-black">0</p></div>
-    <div class="bg-zinc-900 p-3 rounded-xl text-center"><p class="text-xs text-zinc-500">REVENU</p><p id="statRev" class="text-xl font-black">0$</p></div>
+  <div id="shopHeader"></div>
+
+  <div id="statsBox" class="mt-6 grid grid-cols-3 gap-3">
+    <div class="bg-zinc-900 p-3 rounded-xl text-center border border-zinc-800"><p class="text-xs text-zinc-500">VISITES / PLAYS</p><p id="statPlay" class="text-xl font-black">0</p></div>
+    <div class="bg-zinc-900 p-3 rounded-xl text-center border border-zinc-800"><p class="text-xs text-zinc-500">VENDUS</p><p id="statSold" class="text-xl font-black">0</p></div>
+    <div class="bg-zinc-900 p-3 rounded-xl text-center border border-green-500/20"><p class="text-xs text-green-400">REVENU</p><p id="statRev" class="text-xl font-black">0$</p></div>
   </div>
 
-  <div id="productList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"></div>
+  <div class="mt-6">
+    <h2 class="font-bold">Produits <span id="prodCount" class="text-zinc-500 text-sm"></span></h2>
+    <div id="productList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3"></div>
+  </div>
 
   <div id="ownerAction" class="mt-10 bg-zinc-900 p-5 rounded-2xl border border-zinc-800">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center flex-wrap gap-2">
       <h3 class="font-bold">Panel Vendeur <span id="kycBadge"></span> <span id="vipBadge"></span></h3>
       <div class="flex gap-2">
-        <button id="kycBtn" onclick="payKYC('seller')" class="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-bold">KYC Vendeur 1$</button>
-        <button id="vipBtn" onclick="payVIP('seller')" class="bg-gradient-to-r from-purple-500 to-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold">VIP 5$/mois 👑</button>
+        <button id="kycBtn" onclick="payKYC('seller')" class="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-bold">KYC 1$ ✅</button>
+        <button id="vipBtn" onclick="payVIP()" class="bg-gradient-to-r from-purple-500 to-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold">VIP 5$ 👑</button>
       </div>
     </div>
     <p id="kycInfo" class="text-xs text-zinc-400 mt-2"></p>
-    <div class="mt-4 flex gap-2">
-      <button onclick="openModal()" class="flex-1 bg-green-500 text-black font-bold py-3 rounded-xl">+ Produit Universel</button>
-      <button onclick="payKYC('buyer')" class="flex-1 bg-zinc-800 py-3 rounded-xl text-xs">Simuler: Je suis Acheteur VIP</button>
+    <div class="mt-4 grid grid-cols-2 gap-2">
+      <button onclick="openModal()" class="bg-green-500 text-black font-bold py-3 rounded-xl">+ Produit</button>
+      <button onclick="toggleBuyerVIP()" class="bg-zinc-800 py-3 rounded-xl text-xs">Test Acheteur: <span id="buyerStatus"></span></button>
     </div>
   </div>
 </div>
 
-<!-- MODAL -->
 <div id="modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50">
   <div class="bg-zinc-900 p-6 rounded-2xl w-full max-w-md border border-zinc-700">
-    <h2 class="font-bold mb-4">Ajouter Produit</h2>
-    <select id="pType" class="w-full p-3 bg-black rounded-lg mb-3 border border-zinc-800"><option value="beat">🎵 Beat / Audio</option><option value="ebook">📚 E-book</option><option value="video">🎬 Vidéo</option><option value="image">🎨 Image / Design</option><option value="autre">📦 Autre</option></select>
-    <input id="pTitle" placeholder="Titre" class="w-full p-3 bg-black rounded-lg mb-3 border border-zinc-800">
+    <h2 class="font-bold mb-4">Nouveau Produit Universel</h2>
+    <select id="pType" class="w-full p-3 bg-black rounded-lg mb-3 border border-zinc-800"><option value="beat">🎵 Beat / Audio</option><option value="ebook">📚 E-book / PDF</option><option value="video">🎬 Vidéo</option><option value="image">🎨 Image / Design</option><option value="autre">📦 Autre</option></select>
+    <input id="pTitle" placeholder="Titre ex: Afro Drill 2026" class="w-full p-3 bg-black rounded-lg mb-3 border border-zinc-800">
     <input id="pPrice" type="number" placeholder="Prix en $" class="w-full p-3 bg-black rounded-lg mb-3 border border-zinc-800">
     <input id="pFile" type="file" accept="audio/*,image/*,video/*,.pdf" class="w-full p-2 bg-black rounded-lg mb-3 text-sm border border-zinc-800">
     <div class="flex gap-2"><button onclick="closeModal()" class="flex-1 bg-zinc-800 py-3 rounded-xl">Annuler</button><button onclick="saveProduct()" class="flex-1 bg-green-500 text-black font-bold py-3 rounded-xl">Publier</button></div>
@@ -52,33 +53,39 @@ let products = JSON.parse(localStorage.getItem('adh_products_'+username)||'[]');
 let sellerKYC = JSON.parse(localStorage.getItem('adh_kyc_seller_'+username)||'false');
 let sellerVIP = JSON.parse(localStorage.getItem('adh_vip_seller_'+username)||'false');
 let buyerVIP = JSON.parse(localStorage.getItem('adh_vip_buyer')||'false');
-let stats = JSON.parse(localStorage.getItem('adh_stats_'+username)||'{"plays":0,"solds":0}');
-let purchased = JSON.parse(localStorage.getItem('adh_purchased')||'[]');
+let stats = JSON.parse(localStorage.getItem('adh_stats_'+username)||'{"plays":0,"solds":0,"revenue":0}');
+let purchased = JSON.parse(localStorage.getItem('adh_purchased_'+username)||'[]');
 
 function render(){
-  document.getElementById('shopHeader').innerHTML = `<div><h1 class="text-3xl font-black">@${username.toUpperCase()} ${sellerKYC?'✅':''} ${sellerVIP?'👑':''}</h1><p class="text-sm text-zinc-400">${sellerKYC?'Vendeur Vérifié - Produits illimités':'Non Vérifié - 3 produits max'} | ${buyerVIP?'Acheteur VIP - Full Play':'Acheteur Standard - 30s preview'}</p></div><a href="market.html" class="bg-zinc-800 px-4 py-2 rounded-full text-sm">Marché</a>`;
-  document.getElementById('kycBadge').innerText = sellerKYC? '✅':'❌'; document.getElementById('vipBadge').innerText = sellerVIP? '👑 VIP':'';
-  document.getElementById('kycInfo').innerText = sellerKYC? (sellerVIP? 'VIP ACTIF: Tes clients peuvent écouter full + tu es en haut du marché':'KYC OK - Tes clients ont 30s preview. Passe VIP pour full play + boost') : `Tu as ${products.length}/3 produits. Fais KYC 1$ pour débloquer.`;
-  document.getElementById('statsBox').classList.remove('hidden');
-  document.getElementById('statPlay').innerText = stats.plays; document.getElementById('statSold').innerText = stats.solds; document.getElementById('statRev').innerText = (stats.solds * 10)+'$';
-  document.getElementById('kycBtn').style.display = sellerKYC?'none':'block';
-  document.getElementById('vipBtn').style.display = sellerVIP?'none':'block';
+  document.getElementById('shopHeader').innerHTML = `<div class="flex justify-between w-full items-center"><div><h1 class="text-3xl font-black">@${username.toUpperCase()} ${sellerKYC?'✅':''} ${sellerVIP?'👑':''}</h1><p class="text-sm text-zinc-400">${sellerKYC?'Vérifié':'Non Vérifié'} • ${sellerVIP?'Boutique VIP - Full Play autorisé':'Preview 30s'}</p></div><a href="market.html" class="bg-zinc-800 px-4 py-2 rounded-full text-sm">Marché</a></div>`;
+  document.getElementById('kycBadge').innerText=sellerKYC?'✅':''; document.getElementById('vipBadge').innerText=sellerVIP?'👑':'';
+  document.getElementById('buyerStatus').innerText = buyerVIP? 'VIP Full Play 👑' : 'Standard 30s';
+  document.getElementById('statPlay').innerText=stats.plays; document.getElementById('statSold').innerText=stats.solds; document.getElementById('statRev').innerText=stats.revenue+'$';
+  document.getElementById('prodCount').innerText=`(${products.length} ${!sellerKYC?'/3 max sans KYC':''})`;
+  document.getElementById('kycInfo').innerText = sellerKYC? (sellerVIP? 'VIP ACTIF: Top du marché + tes clients écoutent FULL':'KYC OK: 30s preview pour clients. Passe VIP 5$ pour FULL + Top') : `${products.length}/3 - Fais KYC 1$ pour illimité`;
+  document.getElementById('kycBtn').style.display=sellerKYC?'none':'block'; document.getElementById('vipBtn').style.display=sellerVIP?'none':'block';
 
-  document.getElementById('productList').innerHTML = products.map((p,i)=>{
-    const isBought = purchased.includes(i);
-    return `<div class="bg-zinc-900 p-4 rounded-xl border ${sellerVIP?'border-yellow-500/30':''}"><div class="flex justify-between"><span class="text-xs text-zinc-500 uppercase">${p.type} ${p.type==='beat'&&isBought?'• ACHETÉ ✅':''}</span><span class="text-xs">▶ ${p.plays||0} plays</span></div><h3 class="font-bold mt-1">${p.title}</h3>
-    <div class="mt-3 bg-black rounded-lg p-2">${p.type==='beat'?`<audio id="aud${i}" controls src="${p.data}" class="w-full" onplay="addPlay(${i})" ontimeupdate="limitPlay(this,${i})"></audio>`: p.type==='image'?`<img src="${p.data}" class="rounded w-full">`:`<p class="text-xs">Fichier: ${p.fileName}</p>`}</div>
-    <div class="flex justify-between items-center mt-3"><span class="font-black text-green-400">${p.price}$</span><button onclick="buy(${i})" class="bg-white text-black px-4 py-2 rounded-full font-bold text-sm">${isBought?'Télécharger':'Acheter'}</button></div></div>`
-  }).join('') || '<p class="text-zinc-500 col-span-2">Aucun produit</p>';
+  // TRI: plus visités / plus achetés
+  let sorted = [...products].map((p,i)=>({...p, realIndex:i})).sort((a,b)=>(b.plays||0)-(a.plays||0));
+  document.getElementById('productList').innerHTML = sorted.map(p=>{
+    const i=p.realIndex; const isBought=purchased.includes(i);
+    return `<div class="bg-zinc-900 p-4 rounded-xl border ${p.plays>5?'border-yellow-500/30':''} ${sellerVIP?'border-purple-500/20':''}">
+      <div class="flex justify-between text-xs"><span class="text-zinc-500 uppercase">${p.type} ${p.plays>10?'🔥 Tendance':''}</span><span>👁 ${p.plays||0} plays • 🛒 ${p.solds||0} vendus</span></div>
+      <h3 class="font-bold mt-1">${p.title}</h3>
+      <div class="mt-3 bg-black rounded-lg p-2">${p.type==='beat'?`<audio controls src="${p.data}" class="w-full" onplay="addPlay(${i})" ontimeupdate="limitPlay(this,${i})"></audio>`: p.type==='image'?`<img src="${p.data}" class="rounded w-full">`:`<p class="text-xs truncate">Fichier: ${p.fileName}</p>`}</div>
+      <div class="flex justify-between items-center mt-3"><span class="font-black text-green-400">${p.price}$</span><button onclick="buy(${i})" class="bg-white text-black px-4 py-2 rounded-full font-bold text-sm">${isBought?'Télécharger ⬇':'Acheter'}</button></div>
+    </div>`
+  }).join('') || '<p class="text-zinc-500">Aucun produit - Ajoute ton premier hit!</p>';
 }
-function openModal(){ if(!sellerKYC && products.length>=3){ alert('Limite 3 sans KYC. Fais KYC Vendeur 1$'); return; } document.getElementById('modal').classList.remove('hidden'); document.getElementById('modal').classList.add('flex'); }
+function openModal(){ if(!sellerKYC && products.length>=3){ alert('Limite 3 produits sans KYC 1$. Fais KYC pour illimité.'); return; } document.getElementById('modal').classList.remove('hidden'); document.getElementById('modal').classList.add('flex'); }
 function closeModal(){ document.getElementById('modal').classList.add('hidden'); }
-function payKYC(who){ if(who==='seller'){ const c=prompt("KYC Vendeur 1$ - ADH/SDA/USDT/USD ?"); if(c){ localStorage.setItem('adh_kyc_seller_'+username,'true'); sellerKYC=true; alert('KYC Vendeur OK ✅'); render(); }} else { localStorage.setItem('adh_vip_buyer','true'); buyerVIP=true; alert('Mode Acheteur VIP activé 👑 - Tu peux écouter full maintenant'); render(); }}
-function payVIP(who){ const c=prompt("VIP Vendeur 5$/mois - ADH/SDA/USDT/USD ?"); if(c){ localStorage.setItem('adh_vip_seller_'+username,'true'); sellerVIP=true; alert('VIP ACTIVÉ 👑 - Tu es en haut du marché!'); render(); }}
-function saveProduct(){ const t=document.getElementById('pTitle').value, pr=document.getElementById('pPrice').value, ty=document.getElementById('pType').value, f=document.getElementById('pFile').files[0]; if(!t||!pr) return alert('Titre+Prix'); const rd=new FileReader(); rd.onload=e=>{ products.push({title:t, price:pr, type:ty, data:e.target.result, fileName:f?f.name:'', plays:0}); localStorage.setItem('adh_products_'+username,JSON.stringify(products)); closeModal(); render(); }; if(f) rd.readAsDataURL(f); else { products.push({title:t, price:pr, type:ty, data:'', fileName:'', plays:0}); localStorage.setItem('adh_products_'+username,JSON.stringify(products)); closeModal(); render(); } }
-function addPlay(i){ products[i].plays=(products[i].plays||0)+1; stats.plays++; localStorage.setItem('adh_products_'+username,JSON.stringify(products)); localStorage.setItem('adh_stats_'+username,JSON.stringify(stats)); render(); }
-function limitPlay(el,i){ const canFull = buyerVIP || sellerVIP || purchased.includes(i); if(!canFull && el.currentTime>30){ el.pause(); el.currentTime=0; alert('Preview 30s seulement - Achète ou passe Acheteur VIP pour full play 👑'); } }
-function buy(i){ if(purchased.includes(i)){ alert('Téléchargement... (En V2 finale, téléchargement sécurisé + licence)'); return; } if(confirm(`Acheter ${products[i].title} à ${products[i].price}$ ? (Commission 15% pour AfriDigital)`)){ purchased.push(i); stats.solds++; localStorage.setItem('adh_purchased',JSON.stringify(purchased)); localStorage.setItem('adh_stats_'+username,JSON.stringify(stats)); alert('Paiement simulé OK! Tu peux maintenant télécharger full + licence légale.'); render(); } }
+function payKYC(){ let c=prompt("KYC Vendeur 1$ - Tape ADH / SDA / USDT / USD"); if(c){ localStorage.setItem('adh_kyc_seller_'+username,'true'); sellerKYC=true; alert('KYC OK ✅ Boutique Vérifiée'); render(); }}
+function payVIP(){ let c=prompt("VIP 5$/mois - ADH / SDA / USDT / USD?"); if(c){ localStorage.setItem('adh_vip_seller_'+username,'true'); sellerVIP=true; alert('VIP ACTIVÉ 👑 Tu passes en haut du marché!'); render(); }}
+function toggleBuyerVIP(){ buyerVIP=!buyerVIP; localStorage.setItem('adh_vip_buyer',JSON.stringify(buyerVIP)); alert(buyerVIP?'Mode Acheteur VIP: FULL PLAY activé':'Mode Standard: 30s'); render(); }
+function saveProduct(){ const t=document.getElementById('pTitle').value, pr=document.getElementById('pPrice').value, ty=document.getElementById('pType').value, f=document.getElementById('pFile').files[0]; if(!t||!pr) return alert('Titre+Prix'); const rd=new FileReader(); rd.onload=e=>{ products.push({title:t, price:pr, type:ty, data:e.target.result, fileName:f?f.name:'', plays:0, solds:0}); localStorage.setItem('adh_products_'+username,JSON.stringify(products)); closeModal(); render(); }; if(f) rd.readAsDataURL(f); else { products.push({title:t, price:pr, type:ty, data:'', fileName:'', plays:0, solds:0}); localStorage.setItem('adh_products_'+username,JSON.stringify(products)); closeModal(); render(); } }
+function addPlay(i){ products[i].plays=(products[i].plays||0)+1; stats.plays++; localStorage.setItem('adh_products_'+username,JSON.stringify(products)); localStorage.setItem('adh_stats_'+username,JSON.stringify(stats)); document.getElementById('statPlay').innerText=stats.plays; }
+function limitPlay(el,i){ const canFull = buyerVIP || sellerVIP || purchased.includes(i); if(!canFull && el.currentTime>30){ el.pause(); el.currentTime=0; alert('Preview 30s - Achète ou passe VIP Acheteur pour écouter FULL 👑'); } }
+function buy(i){ if(purchased.includes(i)){ alert('Téléchargement full track + licence (V2 finale avec fichier sécurisé)'); return; } if(confirm(`Acheter ${products[i].title} à ${products[i].price}$? Commission 15% pour AfriDigital Hub`)){ purchased.push(i); products[i].solds=(products[i].solds||0)+1; stats.solds++; stats.revenue+=parseFloat(products[i].price); localStorage.setItem('adh_purchased_'+username,JSON.stringify(purchased)); localStorage.setItem('adh_products_'+username,JSON.stringify(products)); localStorage.setItem('adh_stats_'+username,JSON.stringify(stats)); let allTrans=JSON.parse(localStorage.getItem('adh_all_transactions')||'[]'); allTrans.push({seller:username, buyer:'acheteur', price:products[i].price, product:products[i].title, date:new Date().toISOString()}); localStorage.setItem('adh_all_transactions',JSON.stringify(allTrans)); alert('Achat OK ✅ Tu peux maintenant écouter FULL + Télécharger'); render(); } }
 render();
 </script>
 </body>
