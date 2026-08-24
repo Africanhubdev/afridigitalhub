@@ -45,5 +45,5 @@ function retrait(){
  document.getElementById('retStatus').innerText=`✅ Demande retrait @${shop} : ${amt} → Frais CTO 2% = ${fee.toFixed(2)} ADH | Tu reçois ${net.toFixed(2)} via ${method}. Traitement 24h.`;
  localStorage.setItem('retrait_'+shop+'_'+Date.now(),JSON.stringify({shop,amt,fee,method}));
 }
-</script>
+</script><script src="ai-widget.js"></script>
 </body></html>
