@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Pay - AFRI DIGITAL HUB</title>
+<style>body{background:#020617;color:#fff;font-family:Arial;padding:12px}.card{background:#1e293b;padding:14px;border-radius:14px;margin:10px 0;border:1px solid #334155}.tabs{display:flex;gap:6px;overflow-x:auto}.tab{padding:10px 12px;border-radius:20px;background:#0f172a;border:1px solid #334155;cursor:pointer;white-space:nowrap;font-size:12px}.tab.active{background:#3b82f6;border-color:#3b82f6} input,select{width:95%;padding:11px;margin:6px 0;border-radius:10px;border:1px solid #334155;background:#0f172a;color:#fff} button.pay{width:100%;padding:14px;border-radius:12px;border:none;font-weight:bold;cursor:pointer;background:linear-gradient(90deg,#22c55e,#16a34a);color:#fff;font-size:15px}.price{font-size:22px;color:#22c55e;font-weight:bold} small{color:#94a3b8}</style>
+</head><body>
+<h2>💳 Paiement Universel AFRI HUB</h2>
+<div class="card">Paiement pour: <b id="type">KYC</b> | Montant: <div class="price" id="amountTxt">1 USDT</div><small id="convertTxt"></small></div>
+
+<div class="card">
+<div class="tabs">
+<div class="tab active" onclick="setTab('crypto',this)">🪙 Crypto ADH/SDA/ZMAF/USDT</div>
+<div class="tab" onclick="setTab('fcfamm',this)">📱 Mobile Money FCFA</div>
+<div class="tab" onclick="setTab('cdmm',this)">📱 Mobile Money CDF/USD</div>
+<div class="tab" onclick="setTab('card',this)">💳 Visa/Master/PayPal</div>
+<div class="tab" onclick="setTab('bank',this)">🏦 Virement Bancaire</div>
+</div>
+
+<div id="crypto" class="method">
+<p><small>Paye en crypto natif - Validation auto</small></p>
+<select id="cryptoSel" onchange="calc()"><option value="USDT">USDT - 1 USDT</option><option value="ADH">ADH Natif - 15 ADH</option><option value="SDA">SDA - 5 SDA</option><option value="ZMAF">ZMAF - 10 ZMAF</option></select>
+<div class="card" style="background:#0f172a">Adresse: <b id="cryptoAddr">T9y...AfriHubUSDT</b><br><small>Copie et paye, puis upload preuve</small></div>
+</div>
+
+<div id="fcfamm" class="method" style="display:none">
+<p><small>Pour clients Sénégal, Côte d'Ivoire, Cameroun, Bénin, etc.</small></p>
+<select id="fcfammSel"><option>Orange Money FCFA - +225 / +221</option><option>MTN Mobile Money FCFA</option><option>Moov Money FCFA</option><option>Wave FCFA</option></select>
+<input id="fcfanum" placeholder="Ton numéro FCFA ex: +2250700...">
+<div class="card" style="background:#0f172a">Numéro Marchand: <b>+225 07 49 123 456</b><br>Nom: AFRI DIGITAL HUB<br>Montant: <b id="fcfaAmount">600 FCFA (KYC) / 3000 FCFA (VIP)</b></div>
+</div>
+
+<div id="cdmm" class="method" style="display:none">
+<select><option>M-Pesa - RDC</option><option>Orange Money RDC</option><option>Airtel Money RDC</option><option>Airtel Money Congo</option></select>
+<input placeholder="Numéro ex: +243 81...">
+<div class="card" style="background:#0f172a">Marchand: <b>+243 81 234 5678</b> - AFRI HUB - 5 USD / 1 USD KYC</div>
+</div>
+
+<div id="card" class="method" style="display:none">
+<button class="pay" style="background:linear-gradient(90deg,#3b82f6,#2563eb)" onclick="alert('Redirection PayPal/Stripe - 1 USD KYC / 5 USD VIP')">Payer avec PayPal / Visa / MasterCard - 1 USD KYC</button>
+<small>Secure by Flutterwave - Commission 3.5% incluse</small>
+</div>
+
+<div id="bank" class="method" style="display:none">
+<p>Rawbank / Equity / UBA / Ecobank</p>
+<div class="card" style="background:#0f172a">IBAN: CD00 AFRI 1234 5678<br>SWIFT: RAWACDKI<br>Nom: AFRI DIGITAL HUB SARL</div>
+</div>
+
+<div class="card">
+<label>📸 Preuve de Paiement (Capture d'écran obligatoire)</label>
+<input type="file" id="proof" accept="image/*" capture="environment">
+<input id="txid" placeholder="ID Transaction / Référence (optionnel)">
+<button class="pay" onclick="submitPay()">J'ai Payé - Envoyer Preuve ✅</button>
+<p id="status" style="font-size:12px;color:#22c55e"></p>
+</div>
+</div>
+
+<script>
+let params=new URLSearchParams(location.search);
+let type=params.get('type')||'kyc'; // kyc, vip, retrait
+let shop=params.get('u')||'demo';
+document.getElementById('type').innerText=type.toUpperCase()+' @'+shop;
+let rates={USDT:{kyc:1,vip:5}, ADH:{kyc:15,vip:25}, SDA:{kyc:5,vip:5}, ZMAF:{kyc:10,vip:10}, FCFA:{kyc:600,vip:3000}, USD:{kyc:1,vip:5}};
+function setTab(id,el){document.querySelectorAll('.method').forEach(m=>m.style.display='none');document.getElementById(id).style.display='block';document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');calc()}
+function calc(){let c=document.getElementById('cryptoSel').value;let isVip=type==='vip';let amt=isVip?rates[c].vip:rates[c].kyc;document.getElementById('amountTxt').innerText=amt+' '+c;document.getElementById('convertTxt').innerText=`≈ ${rates['FCFA'][isVip?'vip':'kyc']} FCFA | ${rates['USD'][isVip?'vip':'kyc']} USD | ${rates['ADH'][isVip?'vip':'kyc']} ADH`;document.getElementById('cryptoAddr').innerText=c==='USDT'?'T9yAfriHubUSDT-TRC20':c+'_Natif_Addr_'+shop;}
+function submitPay(){
+ let proof=document.getElementById('proof').files[0];
+ if(!proof){alert('Ajoute capture preuve paiement!');return}
+ let r=new FileReader();r.onload=e=>{
+   let key=type==='vip'?'vip_'+shop:'kyc_paid_'+shop;
+   localStorage.setItem(key,'paid');localStorage.setItem('proof_'+shop+'_'+type,e.target.result);
+   document.getElementById('status').innerText='✅ Paiement '+type.toUpperCase()+' reçu! Shop @'+shop+' activé. Validation sous 5 min.';
+   setTimeout(()=>{location.href='dashboard.html?u='+shop},1500);
+ };r.readAsDataURL(proof);
+}
+calc();
+</script></body></html>
