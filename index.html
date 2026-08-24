@@ -37,10 +37,14 @@ body { background: #0a0a0a; color: white; font-family: Arial; margin: 0; padding
 
 <script>
 // ================= CONFIG - TOI TU MODIFIES ICI =================
+
+// ===============================================================
 const CONFIG = {
   prixBaseSDA: 1,
-  tauxADH: 5, // <--- CHANGE ICI QUAND ADH EST LISTE. Ex: 5, 11, 20
+  tauxADH: 5,
+  tauxZMAF: 2,
   paiements: [
+    { code: 'ZMAF', nom: 'ZMAF', actif: true },
     { code: 'SDA', nom: 'SDA', actif: true },
     { code: 'ADH', nom: 'ADH', actif: true },
     { code: 'USDT', nom: 'USDT', actif: true },
@@ -51,8 +55,7 @@ const CONFIG = {
     { code: 'USD', nom: 'USD', actif: true }
   ]
 };
-// ===============================================================
-
+  
 function afficher() {
   document.getElementById('tauxADH').innerText = `1 SDA = ${CONFIG.tauxADH} ADH`;
   document.getElementById('prixPrincipal').innerText = `${CONFIG.prixBaseSDA} SDA`;
