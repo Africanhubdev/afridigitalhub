@@ -1,0 +1,8 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin CTO</title><style>body{background:#020617;color:#fff;font-family:Arial;padding:15px} .card{background:#1e293b;padding:15px;border-radius:12px;margin:10px 0} table{width:100%;font-size:13px} td,th{padding:8px;border-bottom:1px solid #334155;text-align:left}</style></head><body>
+<h2>Admin CTO - AFRI DIGITAL HUB</h2>
+<div class="card">💰 Commission Totale: <b id="totalComm" style="color:#22c55e;font-size:20px">0 ADH</b><br><small>5% sur chaque vente - Auto converti en ADH natif</small></div>
+<div class="card">⚙️ Taux: 1 SDA = 5 ADH = 2 ZMAF | 1 USDT = 1 SDA | VIP = 5 USDT/mois = 25 ADH = 10 ZMAF = 5 SDA<br><button onclick="localStorage.clear();location.reload()" style="background:#ef4444;color:#fff">RESET DATA TEST</button></div>
+<div class="card"><h3>Vendeurs / KYC</h3><table id="kycTable"><tr><th>Shop</th><th>Nom</th><th>Tel</th><th>VIP</th><th>Action</th></tr></table></div>
+<script>
+let html='';let total=0;for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k.startsWith('kyc_')){let d=JSON.parse(localStorage.getItem(k));let shop=d.shop;let vip=localStorage.getItem('vip_'+shop)?'✅':'❌';let sales=localStorage.getItem('sales_'+shop)||0;total+=sales*0.05*5;html+=`<tr><td>@${shop}</td><td>${d.nom}</td><td>${d.tel}</td><td>${vip}</td><td><button onclick="localStorage.setItem('sales_${shop}',${parseInt(sales)+1});location.reload()">+1 Vente SDA</button></td></tr>`}}document.getElementById('kycTable').innerHTML+=html;document.getElementById('totalComm').innerText=total.toFixed(1)+' ADH';
+</script></body></html>
