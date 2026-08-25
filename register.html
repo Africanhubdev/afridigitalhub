@@ -1,64 +1,60 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign Up - Africa Digital Hub</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign Up - AFRI DIGITAL HUB</title>
 <style>
+:root{--bg:#0a1220;--card:#111a2e;--border:#1e2a44;--text:#fff;--muted:#8a9bb5;--yellow:#fbbf24}
+[data-theme="light"]{--bg:#f5f7fb;--card:#fff;--border:#e2e8f0;--text:#0a1220;--muted:#64748b}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
-body{background:#0a1220;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px}
+body{background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px;transition:.3s}
 .box{width:100%;max-width:380px}
-.top{display:flex;justify-content:space-between;align-items:center;background:#111a2e;border:1px solid #1e2a44;border-radius:16px;padding:12px 16px;margin-bottom:20px}
-h1{text-align:center;font-size:28px}
-h1 span{color:#fbbf24}
-.sub{color:#8a9bb5;text-align:center;font-size:13px;margin:8px 0 20px}
-.card{background:#111a2e;border:1px solid #1e2a44;border-radius:18px;padding:20px}
-label{font-size:12px;color:#8a9bb5}
-input{width:100%;background:#0a1220;border:1px solid #1e2a44;border-radius:12px;padding:14px;margin:8px 0 14px;color:#fff}
-.btn{background:#fbbf24;color:#000;border:0;width:100%;padding:14px;border-radius:12px;font-weight:800;margin-top:8px}
-.terms{font-size:11px;color:#8a9bb5;text-align:center;margin-top:12px}
-.login{text-align:center;margin-top:16px;font-size:13px;color:#8a9bb5}
-.login a{color:#fbbf24;text-decoration:none;font-weight:bold}
+.top{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px 16px;margin-bottom:20px;position:relative}
+.icons{display:flex;gap:10px;align-items:center}.icons span{cursor:pointer;font-size:18px}
+.lang-menu{position:absolute;top:50px;right:10px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;display:none;z-index:99;width:130px}
+.lang-menu div{padding:8px;border-radius:8px;cursor:pointer;font-size:13px}.lang-menu div:hover{background:var(--bg)}
+h1{text-align:center;font-size:26px}h1 span{color:var(--yellow)}.sub{color:var(--muted);text-align:center;font-size:13px;margin:8px 0 20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px}
+label{font-size:12px;color:var(--muted)}input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;margin:8px 0 14px;color:var(--text)}
+.btn{background:var(--yellow);color:#000;border:0;width:100%;padding:14px;border-radius:12px;font-weight:800;margin-top:8px;cursor:pointer}
+.terms{font-size:11px;color:var(--muted);text-align:center;margin-top:12px}
+.login{text-align:center;margin-top:16px;font-size:13px;color:var(--muted)}.login a{color:var(--yellow);text-decoration:none;font-weight:bold}
 </style>
 </head>
 <body>
 <div class="box">
-<div class="top"><b>🦅 AFRIDIGITAL</b><div>🌐 🇫🇷</div></div>
+<div class="top"><b>🦅 AFRI DIGITAL HUB</b>
+<div class="icons"><span onclick="toggleLang()">🌐</span><span id="flag">🇫🇷</span><span id="themeBtn" onclick="toggleTheme()">☀️</span><span>☰</span>
+<div class="lang-menu" id="langMenu"><div onclick="setLang('fr')">🇫🇷 Français</div><div onclick="setLang('en')">🇺🇸 English</div><div onclick="setLang('sw')">🇨🇩 Swahili</div></div>
+</div></div>
 
-<h1>Créer compte <span>ADH</span></h1>
-<p class="sub">Rejoins 50K+ membres aujourd'hui</p>
+<h1 id="t1">Créer compte <span>ADH</span></h1>
+<p class="sub" id="t2">Rejoins 50K+ membres aujourd'hui</p>
 
 <div class="card">
-<label>Nom complet</label>
-<input id="name" placeholder="Jean Mukendi">
-<label>Email</label>
-<input id="email" placeholder="jean@email.com" type="email">
-<label>Mot de passe</label>
-<input id="pass" placeholder="Min 8 caractères" type="password">
-<label>Code parrain (optionnel)</label>
-<input id="ref" placeholder="Ex: USER123">
-
-<button class="btn" onclick="signup()">Créer mon compte →</button>
-<p class="terms">En créant, tu acceptes nos CGU et Privacy</p>
+<label id="lName">Nom complet</label><input id="name" placeholder="Jean Mukendi">
+<label id="lEmail">Email</label><input id="email" type="email" placeholder="jean@email.com">
+<label id="lPass">Mot de passe</label><input id="pass" type="password" placeholder="Min 8 caractères">
+<label id="lRef">Code parrain (optionnel)</label><input id="ref" placeholder="Ex: USER123">
+<button class="btn" onclick="signup()" id="btn">Créer mon compte →</button>
+<p class="terms" id="terms">En créant, tu acceptes nos CGU et Privacy</p>
 </div>
-
-<p class="login">Déjà compte? <a href="login.html">Se connecter</a></p>
+<p class="login"><span id="lHas">Déjà compte?</span> <a href="login.html" id="lLogin">Se connecter</a></p>
 </div>
 
 <script>
-function signup(){
- let email=document.getElementById('email').value;
- let name=document.getElementById('name').value;
- let ref=document.getElementById('ref').value || new URLSearchParams(window.location.search).get('ref');
- if(!email||!name) return alert('Remplis nom + email Boss!');
- localStorage.setItem('afri_user',email);
- localStorage.setItem('afri_name',name);
- if(ref) localStorage.setItem('afri_ref_by',ref);
- // Ici on va créditer le parrain plus tard
- location.href='dashboard.html?welcome=1';
+const T={
+fr:{t1:'Créer compte <span>ADH</span>',t2:'Rejoins 50K+ membres aujourd\'hui',name:'Nom complet',email:'Email',pass:'Mot de passe',ref:'Code parrain (optionnel)',btn:'Créer mon compte →',terms:'En créant, tu acceptes nos CGU et Privacy',has:'Déjà compte?',login:'Se connecter',flag:'🇫🇷'},
+en:{t1:'Create <span>ADH</span> account',t2:'Join 50K+ members today',name:'Full name',email:'Email',pass:'Password',ref:'Referral code (optional)',btn:'Create my account →',terms:'By creating, you agree to Terms & Privacy',has:'Already have account?',login:'Sign in',flag:'🇺🇸'},
+sw:{t1:'Fungua akaunti <span>ADH</span>',t2:'Jiunge na wanachama 50K+ leo',name:'Jina kamili',email:'Barua pepe',pass:'Nenosiri',ref:'Msimbo wa mwaliko',btn:'Fungua akaunti yangu →',terms:'Kwa kufungua, unakubali sheria',has:'Una akaunti?',login:'Ingia',flag:'🇨🇩'}
 }
-// Auto-remplir ref si ?ref= dans URL
-document.getElementById('ref').value = new URLSearchParams(window.location.search).get('ref') || '';
+let cur=localStorage.getItem('lang')||'fr';
+function setLang(l){cur=l;localStorage.setItem('lang',l);let t=T[l];document.getElementById('t1').innerHTML=t.t1;document.getElementById('t2').innerText=t.t2;document.getElementById('lName').innerText=t.name;document.getElementById('lEmail').innerText=t.email;document.getElementById('lPass').innerText=t.pass;document.getElementById('lRef').innerText=t.ref;document.getElementById('btn').innerText=t.btn;document.getElementById('terms').innerText=t.terms;document.getElementById('lHas').innerText=t.has;document.getElementById('lLogin').innerText=t.login;document.getElementById('flag').innerText=t.flag;document.getElementById('langMenu').style.display='none'}
+function toggleLang(){let m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'}
+let theme=localStorage.getItem('theme')||'dark';function apply(){document.documentElement.setAttribute('data-theme',theme);document.getElementById('themeBtn').innerText=theme==='dark'?'☀️':'🌙'}function toggleTheme(){theme=theme==='dark'?'light':'dark';localStorage.setItem('theme',theme);apply()}
+setLang(cur);apply();
+document.getElementById('ref').value=new URLSearchParams(location.search).get('ref')||'';
+function signup(){let e=document.getElementById('email').value,n=document.getElementById('name').value,r=document.getElementById('ref').value||new URLSearchParams(location.search).get('ref');if(!e||!n)return alert('Remplis nom+email Boss');localStorage.setItem('afri_user',e);localStorage.setItem('afri_name',n);if(r)localStorage.setItem('afri_ref_by',r);location.href='dashboard.html?welcome=1'}
 </script>
 </body>
 </html>
