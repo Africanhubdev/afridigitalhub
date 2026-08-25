@@ -2,86 +2,70 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Afridigital Hub - Marketplace Africain</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Africa Digital Hub - Smart Finance</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',Arial;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);color:#fff;min-height:100vh;padding:20px;text-align:center}
-h1{font-size:32px;margin:20px 0 10px;background:linear-gradient(90deg,#22c55e,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-h2{font-size:20px;color:#e2e8f0;margin-bottom:8px}
-.sub{color:#94a3b8;margin-bottom:25px}
-#tauxADH{color:#22c55e}
-#pri{background:#1e293b;border:1px solid #334155;display:inline-block;padding:8px 16px;border-radius:20px;font-size:14px;margin-bottom:25px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:600px;margin:0 auto}
-.pay-btn{background:rgba(30,41,59,0.8);backdrop-filter:blur(10px);border:1px solid #334155;padding:18px 10px;border-radius:16px;cursor:pointer;transition:0.3s}
-.pay-btn:hover{transform:translateY(-3px);border-color:#22c55e;box-shadow:0 10px 25px rgba(34,197,94,0.2)}
-.pay-btn:first-child{border-color:#22c55e;background:linear-gradient(135deg,#1e293b,#14532d)}
-.pay-btn small{display:block;margin-top:6px;color:#94a3b8;font-size:12px}
-.btn-seller{display:inline-block;margin-top:35px;background:#3b82f6;color:#fff;padding:14px 28px;border-radius:12px;text-decoration:none;font-weight:bold;transition:0.3s}
-.btn-seller:hover{background:#2563eb;transform:scale(1.05)}
-.foot{margin-top:15px;color:#64748b;font-size:12px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
+body{background:#0a1220;color:#fff;min-height:100vh;padding-bottom:80px}
+.topbar{display:flex;justify-content:space-between;align-items:center;background:#111a2e;border:1px solid #1e2a44;border-radius:16px;margin:12px;padding:12px 16px}
+.topbar b{font-size:20px}
+.badge{border:1px solid #fbbf24;color:#fbbf24;padding:6px 14px;border-radius:20px;font-size:12px;background:rgba(251,191,36,.1)}
+.hero{text-align:center;padding:20px 16px}
+.hero h1{font-size:38px;line-height:1.1}
+.hero h1 span{color:#fbbf24}
+.hero p{color:#8a9bb5;margin:14px 0;font-size:15px}
+.btn-yellow{background:#fbbf24;color:#000;border:0;width:100%;padding:16px;border-radius:14px;font-weight:800;font-size:16px}
+.btn-dark{background:#151f36;color:#fff;border:1px solid #1e2a44;width:100%;padding:14px;border-radius:14px;margin-top:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px}
+.card{background:#121c31;border:1px solid #1e2a44;border-radius:16px;padding:18px;text-align:center}
+.card h2{color:#fbbf24;font-size:28px}
+.card p{color:#8a9bb5;font-size:13px;margin-top:4px}
+.stats{background:#121c31;border:1px solid #1e2a44;border-radius:16px;padding:16px;margin:12px}
+.live{display:flex;justify-content:center;margin:12px}
+.live span{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid #22c55e;padding:6px 14px;border-radius:20px;font-size:12px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#0a1220;border-top:1px solid #1e2a44;display:flex;justify-content:space-around;padding:8px 0}
+.bottom a{color:#6b7e9e;text-decoration:none;font-size:11px;text-align:center}
+.bottom a.active{color:#fbbf24}
+.ticker{background:#121c31;border-radius:10px;margin:12px;padding:8px 12px;font-size:12px;color:#8a9bb5;white-space:nowrap;overflow:hidden}
 </style>
 </head>
 <body>
 
-<h1>Afridigital Hub</h1>
-<h2>1 SDA = <span id="tauxADH">5</span> ADH = 2 ZMAF</h2>
-<div id="pri">Prix principal: <span id="prixPrincipal">1</span> SDA</div>
-<script>
-(function(){
- let p=new URLSearchParams(location.search);
- let ref=p.get('ref');
- if(ref){
-  ref=ref.replace('@','').trim();
-  if(ref){ localStorage.setItem('afri_parrain', ref); console.log('Parrain:',ref); }
- }
-})();
-</script>
-<div id="paiementsGrid" class="grid"></div>
+<div class="topbar"><b>🦅 AFRIDIGITAL</b><div style="display:flex;gap:10px">🌐 🇫🇷 ☀️ ☰</div></div>
+<div class="ticker">🔴 Salon Live en cours — Rejoignez... 1/5</div>
 
-<a href="become-seller.html" class="btn-seller">Devenir Vendeur</a>
-<p class="foot">Paiement sécurisé via SDA / ADH / ZMAF • Propulsé par Zoomer Africa</p>
+<div class="hero">
+<div class="badge">✨ Plateforme de Mentorat Financier Nouvelle Génération</div>
+<h1 style="margin-top:16px">Africa Digital<br><span>Hub Mentorship</span></h1>
+<p>Connectez-vous avec des mentors experts, financez vos projets par voting communautaire, et développez votre réseau.</p>
+<button class="btn-yellow" onclick="location.href='marketplace.html'">Commencer Maintenant →</button>
+<button class="btn-dark" onclick="location.href='dashboard.html'">Découvrir la Plateforme</button>
+</div>
 
-<script>
-const CONFIG = {
-  prixBaseSDA: 1,
-  tauxADH: 5,
-  tauxZMAF: 2,
-  paiements: [
-    { code: 'ZMAF', nom: 'ZMAF', actif: true },
-    { code: 'SDA', nom: 'SDA', actif: true },
-    { code: 'ADH', nom: 'ADH', actif: true },
-    { code: 'USDT', nom: 'USDT', actif: true },
-    { code: 'USDC', nom: 'USDC', actif: true },
-    { code: 'CDF', nom: 'CDF', actif: true },
-    { code: 'XOF', nom: 'FCFA', actif: true },
-    { code: 'UGX', nom: 'UGX', actif: true },
-    { code: 'USD', nom: 'USD', actif: true }
-  ]
-};
-function afficher(){
-  document.getElementById('tauxADH').innerText=CONFIG.tauxADH;
-  document.getElementById('prixPrincipal').innerText=CONFIG.prixBaseSDA;
-  const grid=document.getElementById('paiementsGrid');
-  grid.innerHTML='';
-  CONFIG.paiements.forEach(p=>{
-    if(p.actif){
-      let prix=p.code==='ADH'?CONFIG.tauxADH:p.code==='ZMAF'?CONFIG.tauxZMAF:CONFIG.prixBaseSDA;
-      const btn=document.createElement('div');
-      btn.className='pay-btn active';
-      if(p.code==='ADH'||p.code==='ZMAF'){
-        btn.innerHTML=`${p.nom}<br><small>${prix} ${p.code}</small>`;
-      }else{
-        btn.innerHTML=`${p.nom}<br><small>Payer en ${p.code}</small>`;
-      }
-      grid.appendChild(btn);
-    }
-  });
-} afficher();
-// CAPTURE PARRAIN
-const params = new URLSearchParams(window.location.search);
-const ref = params.get('u');
-if(ref){ localStorage.setItem('afri_parrain', ref); }
-</script>
+<div class="grid2">
+<div class="card"><h2>10K+</h2><p>Mentors Actifs</p></div>
+<div class="card"><h2>50K+</h2><p>Membres</p></div>
+<div class="card"><h2>2M+</h2><p>ADH Échangés</p></div>
+<div class="card"><h2>98%</h2><p>Satisfaction</p></div>
+</div>
+
+<div class="live"><span>● En direct</span></div>
+<h2 style="text-align:center">Statistiques en <span style="color:#fbbf24">temps réel</span></h2>
+<p style="text-align:center;color:#8a9bb5;font-size:13px;margin:6px 16px">La communauté ADH génère de la valeur chaque seconde</p>
+
+<div class="grid2">
+<div class="card" style="text-align:left"><small style="color:#fbbf24">$ Gains communauté</small><h2 style="color:#fff;margin-top:8px">2.3M<br>ADH</h2></div>
+<div class="card" style="text-align:left"><small style="color:#22c55e">👥 Membres actifs</small><h2 style="color:#fff;margin-top:8px">52.4K</h2></div>
+<div class="card" style="text-align:left"><small>⚡ Transactions/24h</small><h2 style="color:#fff;margin-top:8px">8.8K</h2></div>
+<div class="card" style="text-align:left"><small style="color:#a78bfa">📈 Croissance</small><h2 style="color:#fff;margin-top:8px">35.5%</h2></div>
+</div>
+
+<div class="bottom">
+<a class="active" href="index.html">🏠<br>Accueil</a>
+<a href="marketplace.html">🏪<br>Marketplace</a>
+<a href="dashboard.html">⊞<br>Dashboard</a>
+<a href="profil.html">👤<br>Profil</a>
+</div>
+
 </body>
 </html>
