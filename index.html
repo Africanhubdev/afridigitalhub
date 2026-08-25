@@ -68,8 +68,11 @@ function afficher(){
       grid.appendChild(btn);
     }
   });
-}
-afficher();
+} afficher();
+// CAPTURE PARRAIN
+const params = new URLSearchParams(window.location.search);
+const ref = params.get('u');
+if(ref){ localStorage.setItem('afri_parrain', ref); }
 </script>
 </body>
 </html>
