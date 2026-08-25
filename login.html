@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login - Africa Digital Hub</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
+body{background:#0a1220;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px}
+.box{width:100%;max-width:380px}
+.top{display:flex;justify-content:space-between;align-items:center;background:#111a2e;border:1px solid #1e2a44;border-radius:16px;padding:12px 16px;margin-bottom:20px}
+.badge{border:1px solid #fbbf24;color:#fbbf24;padding:4px 10px;border-radius:20px;font-size:11px;background:rgba(251,191,36,.1)}
+h1{text-align:center;font-size:30px;margin:6px 0}
+h1 span{color:#fbbf24}
+.sub{color:#8a9bb5;text-align:center;font-size:13px;margin-bottom:20px}
+.card{background:#111a2e;border:1px solid #1e2a44;border-radius:18px;padding:20px}
+label{font-size:12px;color:#8a9bb5}
+input{width:100%;background:#0a1220;border:1px solid #1e2a44;border-radius:12px;padding:14px;margin:8px 0 14px;color:#fff}
+.btn{background:#fbbf24;color:#000;border:0;width:100%;padding:14px;border-radius:12px;font-weight:800;margin-top:8px}
+.forgot{text-align:right;margin:8px 0}
+.forgot a{color:#fbbf24;font-size:12px;text-decoration:none}
+.divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:#6b7e9e;font-size:12px}
+.divider hr{flex:1;border:0;border-top:1px solid #1e2a44}
+.social{display:flex;gap:12px}
+.social button{flex:1;background:#151f36;border:1px solid #1e2a44;padding:12px;border-radius:12px;color:#fff}
+.signup{text-align:center;margin-top:16px;font-size:13px;color:#8a9bb5}
+.signup a{color:#fbbf24;text-decoration:none;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="box">
+<div class="top"><b>🦅 AFRIDIGITAL</b><div>🌐 🇫🇷 ☀️ ☰</div></div>
+
+<h1>Bienvenue<br>sur <span style="color:#fbbf24">AFRI</span>HUB</h1>
+<p class="sub">Connectez-vous à votre espace sécurisé</p>
+
+<div class="card">
+<label>Email</label>
+<input type="email" placeholder="votre@email.com" id="email">
+<label>Mot de passe</label>
+<input type="password" placeholder="••••••••" id="pass">
+<div class="forgot"><a href="#">Mot de passe oublié?</a></div>
+<button class="btn" onclick="login()">Se connecter</button>
+
+<div class="divider"><hr> ou continuer avec <hr></div>
+<div class="social"><button>G Google</button><button>X</button></div>
+</div>
+
+<p class="signup">Pas encore de compte? <a href="register.html">Créer un compte</a></p>
+</div>
+
+<script>
+function login(){
+ let e=document.getElementById('email').value;
+ if(e){localStorage.setItem('afri_user',e); location.href='dashboard.html';}
+ else alert('Entre ton email Boss!');
+}
+</script>
+</body>
+  </html>
