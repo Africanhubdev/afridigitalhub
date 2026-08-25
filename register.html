@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign Up - Africa Digital Hub</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
+body{background:#0a1220;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px}
+.box{width:100%;max-width:380px}
+.top{display:flex;justify-content:space-between;align-items:center;background:#111a2e;border:1px solid #1e2a44;border-radius:16px;padding:12px 16px;margin-bottom:20px}
+h1{text-align:center;font-size:28px}
+h1 span{color:#fbbf24}
+.sub{color:#8a9bb5;text-align:center;font-size:13px;margin:8px 0 20px}
+.card{background:#111a2e;border:1px solid #1e2a44;border-radius:18px;padding:20px}
+label{font-size:12px;color:#8a9bb5}
+input{width:100%;background:#0a1220;border:1px solid #1e2a44;border-radius:12px;padding:14px;margin:8px 0 14px;color:#fff}
+.btn{background:#fbbf24;color:#000;border:0;width:100%;padding:14px;border-radius:12px;font-weight:800;margin-top:8px}
+.terms{font-size:11px;color:#8a9bb5;text-align:center;margin-top:12px}
+.login{text-align:center;margin-top:16px;font-size:13px;color:#8a9bb5}
+.login a{color:#fbbf24;text-decoration:none;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="box">
+<div class="top"><b>🦅 AFRIDIGITAL</b><div>🌐 🇫🇷</div></div>
+
+<h1>Créer compte <span>ADH</span></h1>
+<p class="sub">Rejoins 50K+ membres aujourd'hui</p>
+
+<div class="card">
+<label>Nom complet</label>
+<input id="name" placeholder="Jean Mukendi">
+<label>Email</label>
+<input id="email" placeholder="jean@email.com" type="email">
+<label>Mot de passe</label>
+<input id="pass" placeholder="Min 8 caractères" type="password">
+<label>Code parrain (optionnel)</label>
+<input id="ref" placeholder="Ex: USER123">
+
+<button class="btn" onclick="signup()">Créer mon compte →</button>
+<p class="terms">En créant, tu acceptes nos CGU et Privacy</p>
+</div>
+
+<p class="login">Déjà compte? <a href="login.html">Se connecter</a></p>
+</div>
+
+<script>
+function signup(){
+ let email=document.getElementById('email').value;
+ let name=document.getElementById('name').value;
+ let ref=document.getElementById('ref').value || new URLSearchParams(window.location.search).get('ref');
+ if(!email||!name) return alert('Remplis nom + email Boss!');
+ localStorage.setItem('afri_user',email);
+ localStorage.setItem('afri_name',name);
+ if(ref) localStorage.setItem('afri_ref_by',ref);
+ // Ici on va créditer le parrain plus tard
+ location.href='dashboard.html?welcome=1';
+}
+// Auto-remplir ref si ?ref= dans URL
+document.getElementById('ref').value = new URLSearchParams(window.location.search).get('ref') || '';
+</script>
+</body>
+</html>
