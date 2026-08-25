@@ -1,7 +1,7 @@
 <!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Dashboard Vendeur</title>
 <style>body{background:#0f172a;color:#fff;font-family:Arial;padding:15px}.card{background:#1e293b;padding:15px;border-radius:12px;margin:12px 0;border:1px solid #334155}.kpi{font-size:22px;color:#22c55e;font-weight:bold} button{padding:12px;border-radius:10px;border:none;font-weight:bold;cursor:pointer}.vip{background:linear-gradient(90deg,#f59e0b,#ef4444);color:#fff;width:100%} input{width:95%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff}.upload{border:2px dashed #475569;padding:15px;border-radius:10px;text-align:center;margin:8px 0;background:#0f172a} img.prev{width:100%;max-height:150px;border-radius:8px;margin-top:8px;display:none;object-fit:cover}</style>
 </head><body>
-<h2>Dashboard - <span id="shopName"></span></h2>
+<h2>Dashboard - <span id="shopName"></span></h2><div id="parrainBox" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000;padding:12px;border-radius:12px;margin:10px;font-weight:bold;display:none">🎁 Bonus Parrainage: <span id="bonusVal">0$</span> <button onclick="claimBonus()" style="background:#000;color:#fbbf24;border:0;padding:6px 12px;border-radius:8px;margin-left:10px">Retirer</button><br><small>Partage: afridigitalhub.shop?ref=@<span class="myShop"></span></small></div>
 <div class="card">Statut VIP: <b id="vip">NON ACTIF</b><br><small id="vipExp"></small><br><br><button class="vip" onclick="payerVIP()">Payer Abonnement VIP - 5 USDT (25 ADH / 10 ZMAF / 5 SDA)</button></div>
 <div class="card">Ventes: <div class="kpi" id="ventes">0 SDA</div><small>Commission 5% = <span id="comm">0 ADH</span></small></div>
 
@@ -39,7 +39,23 @@ function saveKYC(){
  localStorage.setItem('kyc_'+shop,JSON.stringify(data));
  document.getElementById('kycStatus').innerText='✅ KYC PRO envoyé! Recto + Verso + Selfie enregistrés. Validation sous 24h.';
 }
-checkVIP();
+function showBonus(){
+  let b=parseFloat(localStorage.getItem('afri_bonus_'+shop)||'0');
+  let box=document.getElementById('parrainBox');
+  let val=document.getElementById('bonusVal');
+  let my=document.querySelectorAll('.myShop');
+  if(box){box.style.display='block';}
+  if(val){val.innerText=b.toFixed(2)+'$';}
+  my.forEach(e=>e.innerText=shop);
+}
+function claimBonus(){
+  let b=parseFloat(localStorage.getItem('afri_bonus_'+shop)||'0');
+  if(b<=0){alert('Pas encore de bonus');return;}
+  alert('Demande retrait '+b.toFixed(2)+'$ envoyée au CTO. Contact WhatsApp.');
+  localStorage.setItem('afri_bonus_'+shop,'0');
+  showBonus();
+}
+showBonus();checkVIP();
 // charge preview si déjà fait
 ['prevRecto','prevVerso','prevSelfie'].forEach(id=>{let d=localStorage.getItem(id+'_'+shop);if(d){let im=document.getElementById(id);im.src=d;im.style.display='block'}});
 document.getElementById('ventes').innerText=(localStorage.getItem('sales_'+shop)||0)+' SDA';
