@@ -3,58 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Login - Africa Digital Hub</title>
+<title>AFRI DIGITAL HUB - Login</title>
 <style>
+:root{--bg:#0a1220;--card:#111a2e;--border:#1e2a44;--text:#fff;--muted:#8a9bb5;--yellow:#fbbf24}
+[data-theme="light"]{--bg:#f5f7fb;--card:#ffffff;--border:#e2e8f0;--text:#0a1220;--muted:#64748b}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
-body{background:#0a1220;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px}
+body{background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px;transition:0.3s}
 .box{width:100%;max-width:380px}
-.top{display:flex;justify-content:space-between;align-items:center;background:#111a2e;border:1px solid #1e2a44;border-radius:16px;padding:12px 16px;margin-bottom:20px}
-.badge{border:1px solid #fbbf24;color:#fbbf24;padding:4px 10px;border-radius:20px;font-size:11px;background:rgba(251,191,36,.1)}
-h1{text-align:center;font-size:30px;margin:6px 0}
-h1 span{color:#fbbf24}
-.sub{color:#8a9bb5;text-align:center;font-size:13px;margin-bottom:20px}
-.card{background:#111a2e;border:1px solid #1e2a44;border-radius:18px;padding:20px}
-label{font-size:12px;color:#8a9bb5}
-input{width:100%;background:#0a1220;border:1px solid #1e2a44;border-radius:12px;padding:14px;margin:8px 0 14px;color:#fff}
-.btn{background:#fbbf24;color:#000;border:0;width:100%;padding:14px;border-radius:12px;font-weight:800;margin-top:8px}
-.forgot{text-align:right;margin:8px 0}
-.forgot a{color:#fbbf24;font-size:12px;text-decoration:none}
-.divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:#6b7e9e;font-size:12px}
-.divider hr{flex:1;border:0;border-top:1px solid #1e2a44}
-.social{display:flex;gap:12px}
-.social button{flex:1;background:#151f36;border:1px solid #1e2a44;padding:12px;border-radius:12px;color:#fff}
-.signup{text-align:center;margin-top:16px;font-size:13px;color:#8a9bb5}
-.signup a{color:#fbbf24;text-decoration:none;font-weight:bold}
+.top{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px 16px;margin-bottom:20px;position:relative}
+.top b{font-size:14px;letter-spacing:0.5px}
+.icons{display:flex;gap:10px;align-items:center}
+.icons span{cursor:pointer;font-size:18px}
+.lang-menu{position:absolute;top:50px;right:10px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;display:none;z-index:99;width:130px}
+.lang-menu div{padding:8px;border-radius:8px;cursor:pointer;font-size:13px}
+.lang-menu div:hover{background:var(--bg)}
+h1{text-align:center;font-size:28px} h1 span{color:var(--yellow)}
+.sub{color:var(--muted);text-align:center;font-size:13px;margin:8px 0 20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px}
+label{font-size:12px;color:var(--muted)}
+input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;margin:8px 0 14px;color:var(--text)}
+.btn{background:var(--yellow);color:#000;border:0;width:100%;padding:14px;border-radius:12px;font-weight:800;margin-top:8px;cursor:pointer}
+.forgot{text-align:right;margin:8px 0}.forgot a{color:var(--yellow);font-size:12px;text-decoration:none}
+.divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--muted);font-size:12px}.divider hr{flex:1;border:0;border-top:1px solid var(--border)}
+.social{display:flex;gap:12px}.social button{flex:1;background:var(--bg);border:1px solid var(--border);padding:12px;border-radius:12px;color:var(--text);cursor:pointer}
+.signup{text-align:center;margin-top:16px;font-size:13px;color:var(--muted)}.signup a{color:var(--yellow);text-decoration:none;font-weight:bold}
 </style>
 </head>
 <body>
 <div class="box">
-<div class="top"><b>🦅 AFRIDIGITAL</b><div>🌐 🇫🇷 ☀️ ☰</div></div>
+<div class="top"><b>🦅 AFRI DIGITAL HUB</b>
+<div class="icons">
+<span id="langBtn" onclick="toggleLang()">🌐</span>
+<span id="flag">🇫🇷</span>
+<span id="themeBtn" onclick="toggleTheme()">☀️</span>
+<span>☰</span>
+<div class="lang-menu" id="langMenu">
+<div onclick="setLang('fr')">🇫🇷 Français</div>
+<div onclick="setLang('en')">🇺🇸 English</div>
+<div onclick="setLang('sw')">🇨🇩 Swahili</div>
+</div>
+</div>
+</div>
 
-<h1>Bienvenue<br>sur <span style="color:#fbbf24">AFRI</span>HUB</h1>
-<p class="sub">Connectez-vous à votre espace sécurisé</p>
+<h1 id="t1">Bienvenue<br>sur <span>AFRIHUB</span></h1>
+<p class="sub" id="t2">Connectez-vous à votre espace sécurisé</p>
 
 <div class="card">
-<label>Email</label>
-<input type="email" placeholder="votre@email.com" id="email">
-<label>Mot de passe</label>
-<input type="password" placeholder="••••••••" id="pass">
-<div class="forgot"><a href="#">Mot de passe oublié?</a></div>
-<button class="btn" onclick="login()">Se connecter</button>
-
-<div class="divider"><hr> ou continuer avec <hr></div>
+<label id="lEmail">Email</label>
+<input id="email" placeholder="votre@email.com">
+<label id="lPass">Mot de passe</label>
+<input id="pass" type="password" placeholder="••••••••">
+<div class="forgot"><a href="#" id="lForgot">Mot de passe oublié?</a></div>
+<button class="btn" onclick="login()" id="btnLogin">Se connecter</button>
+<div class="divider"><hr><span id="lOr">ou continuer avec</span><hr></div>
 <div class="social"><button>G Google</button><button>X</button></div>
 </div>
 
-<p class="signup">Pas encore de compte? <a href="register.html">Créer un compte</a></p>
+<p class="signup"><span id="lNo">Pas encore de compte?</span> <a href="register.html" id="lCreate">Créer un compte</a></p>
 </div>
 
 <script>
-function login(){
- let e=document.getElementById('email').value;
- if(e){localStorage.setItem('afri_user',e); location.href='dashboard.html';}
- else alert('Entre ton email Boss!');
+const trans={
+fr:{t1:'Bienvenue<br>sur <span>AFRIHUB</span>',t2:'Connectez-vous à votre espace sécurisé',email:'Email',pass:'Mot de passe',forgot:'Mot de passe oublié?',login:'Se connecter',or:'ou continuer avec',no:'Pas encore de compte?',create:'Créer un compte',flag:'🇫🇷'},
+en:{t1:'Welcome<br>to <span>AFRIHUB</span>',t2:'Connect to your secure space',email:'Email',pass:'Password',forgot:'Forgot password?',login:'Sign in',or:'or continue with',no:'No account yet?',create:'Create account',flag:'🇺🇸'},
+sw:{t1:'Karibu<br>kwenye <span>AFRIHUB</span>',t2:'Ingia kwenye nafasi yako salama',email:'Barua pepe',pass:'Nenosiri',forgot:'Umesahau nenosiri?',login:'Ingia',or:'au endelea na',no:'Huna akaunti?',create:'Fungua akaunti',flag:'🇨🇩'}
 }
+let curLang=localStorage.getItem('lang')||'fr';
+function setLang(l){
+curLang=l; localStorage.setItem('lang',l);
+let t=trans[l];
+document.getElementById('t1').innerHTML=t.t1;
+document.getElementById('t2').innerText=t.t2;
+document.getElementById('lEmail').innerText=t.email;
+document.getElementById('lPass').innerText=t.pass;
+document.getElementById('lForgot').innerText=t.forgot;
+document.getElementById('btnLogin').innerText=t.login;
+document.getElementById('lOr').innerText=t.or;
+document.getElementById('lNo').innerText=t.no;
+document.getElementById('lCreate').innerText=t.create;
+document.getElementById('flag').innerText=t.flag;
+document.getElementById('langMenu').style.display='none';
+}
+function toggleLang(){let m=document.getElementById('langMenu'); m.style.display=m.style.display==='block'?'none':'block'}
+let theme=localStorage.getItem('theme')||'dark';
+function applyTheme(){document.documentElement.setAttribute('data-theme',theme); document.getElementById('themeBtn').innerText=theme==='dark'?'☀️':'🌙'}
+function toggleTheme(){theme=theme==='dark'?'light':'dark'; localStorage.setItem('theme',theme); applyTheme()}
+setLang(curLang); applyTheme();
+function login(){let e=document.getElementById('email').value; if(!e) return alert('Email?'); localStorage.setItem('afri_user',e); location.href='dashboard.html'}
 </script>
 </body>
-  </html>
+ </html>
