@@ -27,7 +27,16 @@ h2{font-size:20px;color:#e2e8f0;margin-bottom:8px}
 <h1>Afridigital Hub</h1>
 <h2>1 SDA = <span id="tauxADH">5</span> ADH = 2 ZMAF</h2>
 <div id="pri">Prix principal: <span id="prixPrincipal">1</span> SDA</div>
-
+<script>
+(function(){
+ let p=new URLSearchParams(location.search);
+ let ref=p.get('ref');
+ if(ref){
+  ref=ref.replace('@','').trim();
+  if(ref){ localStorage.setItem('afri_parrain', ref); console.log('Parrain:',ref); }
+ }
+})();
+</script>
 <div id="paiementsGrid" class="grid"></div>
 
 <a href="become-seller.html" class="btn-seller">Devenir Vendeur</a>
