@@ -57,17 +57,27 @@ let type=params.get('type')||'kyc'; // kyc, vip, retrait
 let shop=params.get('u')||'demo';
 document.getElementById('type').innerText=type.toUpperCase()+' @'+shop;
 let rates={USDT:{kyc:1,vip:5}, ADH:{kyc:15,vip:25}, SDA:{kyc:5,vip:5}, ZMAF:{kyc:10,vip:10}, FCFA:{kyc:600,vip:3000}, USD:{kyc:1,vip:5}};
-function setTab(id,el){document.querySelectorAll('.method').forEach(m=>m.style.display='none');document.getElementById(id).style.display='block';document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');calc()}
-function calc(){let c=document.getElementById('cryptoSel').value;let isVip=type==='vip';let amt=isVip?rates[c].vip:rates[c].kyc;document.getElementById('amountTxt').innerText=amt+' '+c;document.getElementById('convertTxt').innerText=`≈ ${rates['FCFA'][isVip?'vip':'kyc']} FCFA | ${rates['USD'][isVip?'vip':'kyc']} USD | ${rates['ADH'][isVip?'vip':'kyc']} ADH`;document.getElementById('cryptoAddr').innerText=c==='USDT'?'T9yAfriHubUSDT-TRC20':c+'_Natif_Addr_'+shop;}
+function setTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');if(el)el.classList.add('active');}
+function calc(){let c=document.getElementById('usd');let t=document.getElementById('type');let typeVal=(t?.innerText||'kyc').toLowerCase();let r=rates.USDT[typeVal]||1;document.getElementById('fc').innerText=':c+'+'_Natif_Addr_'+'+shop;'}
 function submitPay(){
- let proof=document.getElementById('proof').files[0];
- if(!proof){alert('Ajoute capture preuve paiement!');return}
- let r=new FileReader();r.onload=e=>{
-   let key=type==='vip'?'vip_'+shop:'kyc_paid_'+shop;
-   localStorage.setItem(key,'paid');localStorage.setItem('proof_'+shop+'_'+type,e.target.result);
-   document.getElementById('status').innerText='✅ Paiement '+type.toUpperCase()+' reçu! Shop @'+shop+' activé. Validation sous 5 min.';
-   setTimeout(()=>{location.href='dashboard.html?u='+shop},1500);
- };r.readAsDataURL(proof);
+  let parrain = localStorage.getItem('afri_parrain');
+  let proof=document.getElementById('proof').files[0];
+  if(!proof){alert('Ajoute capture preuve paiement');return;}
+  let r=new FileReader();r.onload=e=>{
+    let key=type==='vip'?'vip_'+shop:'kyc_'+shop;
+    localStorage.setItem(key,'paid');
+    if(parrain && parrain!== shop){
+      let bKey='afri_bonus_'+parrain;
+      let cur=parseFloat(localStorage.getItem(bKey)||'0');
+      let usd=parseFloat(document.getElementById('usd')?.value || '1');
+      cur += usd*0.01;
+      localStorage.setItem(bKey, cur);
+      localStorage.removeItem('afri_parrain');
+    }
+    localStorage.setItem('proof_'+shop+'_'+type, e.target.result);
+    document.getElementById('status').innerText=type.toUpperCase()+' reçu! Shop @'+shop;
+    setTimeout(()=>{location.href='dashboard.html?u='+shop;},1500);
+  };r.readAsDataURL(proof);
 }
 calc();
 </script><script src="ai-widget.js"></script>
